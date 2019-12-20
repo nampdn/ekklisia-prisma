@@ -2,7 +2,7 @@ FROM node:13
 
 WORKDIR /usr/local/app
 
-COPY package.json yarn.lock ./
+COPY package.json yarn.lock ./prisma ./
 
 RUN yarn install --frozen-dependencies
 
