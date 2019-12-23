@@ -2,6 +2,17 @@ import { Photon } from '@prisma/photon'
 const photon = new Photon()
 
 async function main() {
+  await photon.posts.deleteMany({
+    where: { title: 'Watch the talks from Prisma Day 2019' },
+  })
+  await photon.posts.deleteMany({
+    where: { title: 'Subscribe to GraphQL Weekly for community news' },
+  })
+  await photon.posts.deleteMany({
+    where: { title: 'Follow Prisma on Twitter' },
+  })
+  await photon.users.deleteMany({ where: { name: 'Alice' } })
+  await photon.users.deleteMany({ where: { name: 'Bob' } })
   const user1 = await photon.users.create({
     data: {
       email: 'alice@prisma.io',
@@ -12,6 +23,12 @@ async function main() {
           title: 'Watch the talks from Prisma Day 2019',
           content: 'https://www.prisma.io/blog/z11sg6ipb3i1/',
           published: true,
+        },
+      },
+      profile: {
+        create: {
+          fullName: 'Alice',
+          gender: 'male',
         },
       },
     },
@@ -34,6 +51,12 @@ async function main() {
             published: false,
           },
         ],
+      },
+      profile: {
+        create: {
+          fullName: 'Bob',
+          gender: 'female',
+        },
       },
     },
   })
