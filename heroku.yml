@@ -1,7 +1,7 @@
 setup:
   addons:
     - plan: heroku-postgresql
-      as: DATABASE_URL
+      as: DATABASE
 build:
   docker:
-    graphql: Dockerfile
+    web: Dockerfile
