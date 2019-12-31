@@ -7,8 +7,8 @@
     "clean": "rm -rf dist",
     "build": "npm -s run clean && npm -s run generate && tsc",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
-    "generate:prisma": "prisma2 generate",
-    "generate:nexus": "ts-node --transpile-only src/schema",
+    "generate:prisma": "echo \"Prisma generate\" && prisma2 generate",
+    "generate:nexus": "echo \"Nexus generate\" && ts-node --transpile-only src/schema",
     "postinstall": "test -n \"$NOYARNPOSTINSTALL\" || npm -s run generate",
     "dev": "ts-node-dev --no-notify --respawn --transpileOnly src/server",
     "seed": "ts-node prisma/seed"
