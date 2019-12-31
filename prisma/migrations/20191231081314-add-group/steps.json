@@ -1,0 +1,85 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "stepType": "CreateModel",
+      "model": "Group"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Group",
+      "field": "id",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Group",
+      "field": "id",
+      "directive": "default"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Group",
+      "field": "id",
+      "directive": "default",
+      "argument": "",
+      "value": "cuid()"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Group",
+      "field": "id",
+      "directive": "id"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Group",
+      "field": "name",
+      "type": "String",
+      "arity": "required"
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Group",
+      "field": "leader",
+      "type": "Profile",
+      "arity": "optional"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Group",
+      "field": "leader",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Group",
+      "field": "leader",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"GroupLeader\""
+    },
+    {
+      "stepType": "CreateField",
+      "model": "Group",
+      "field": "members",
+      "type": "Profile",
+      "arity": "list"
+    },
+    {
+      "stepType": "CreateDirective",
+      "model": "Group",
+      "field": "members",
+      "directive": "relation"
+    },
+    {
+      "stepType": "CreateDirectiveArgument",
+      "model": "Group",
+      "field": "members",
+      "directive": "relation",
+      "argument": "name",
+      "value": "\"GroupMembers\""
+    }
+  ]
+}

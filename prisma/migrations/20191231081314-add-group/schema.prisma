@@ -4,7 +4,7 @@ generator photon {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model User {
@@ -55,18 +55,4 @@ model Group {
   name String
   leader Profile?  @relation(name: "GroupLeader")
   members Profile[] @relation(name: "GroupMembers")
-}
-
-model Org {
-    id         String     @default(cuid()) @id
-    name       String
-    groups     Group[]
-    activities Activity[]
-}
-
-model Activity {
-    id   String @default(cuid()) @id
-    name String
-    type String
-    org  Org
 }

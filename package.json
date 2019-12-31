@@ -10,7 +10,8 @@
     "generate:nexus": "ts-node --transpile-only src/schema",
     "postinstall": "test -n \"$NOYARNPOSTINSTALL\" || npm -s run generate",
     "dev": "ts-node-dev --no-notify --respawn --transpileOnly src/server",
-    "seed": "ts-node prisma/seed"
+    "seed": "ts-node prisma/seed",
+    "prisma": "DATABASE_URL=postgresql://postgres:3bb98affe3c6756d2314c917cb4c8aed@us-seattle-m1.nodes.vgm.me:9433/prisma2?schema=ekklisia prisma2 dev"
   },
   "dependencies": {
     "@prisma/photon": "2.0.0-preview018.2",
