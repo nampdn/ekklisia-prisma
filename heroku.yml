@@ -6,4 +6,4 @@ build:
   docker:
     web: Dockerfile
 run:
-  web: where yarn
+  web: node dist/server
