@@ -3,3 +3,7 @@ build:
     web: Dockerfile
 run:
   web: yarn start
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE_URL
