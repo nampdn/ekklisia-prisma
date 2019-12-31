@@ -1,6 +1,7 @@
 {
   "name": "graphql-auth",
   "license": "MIT",
+  "main": "dist/server",
   "scripts": {
     "start": "node dist/server",
     "clean": "rm -rf dist",
