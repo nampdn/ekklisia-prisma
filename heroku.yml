@@ -1,9 +1,9 @@
-build:
-  docker:
-    web: Dockerfile
-run:
-  web: yarn start
 setup:
   addons:
     - plan: heroku-postgresql
       as: DATABASE_URL
+build:
+  docker:
+    graphql: Dockerfile
+run:
+  graphql: start
