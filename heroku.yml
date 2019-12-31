@@ -5,5 +5,3 @@ setup:
 build:
   docker:
     graphql: Dockerfile
-run:
-  graphql: start
