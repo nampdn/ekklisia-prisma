@@ -23,4 +23,20 @@ model User {
   password String
   name     String?
   posts    Post[]
+  profile  Profile? @relation(name: "UserProfile")
+}
+
+model Profile {
+  id           String    @default(cuid()) @id
+  fullName     String
+  gender       Boolean
+  oldId        String?
+  email        String?
+  facebookId   String?
+  phoneNumber  String?
+  birthday     DateTime?
+  joinDate     DateTime?
+  dayOfBirth   Int?
+  monthOfBirth Int?
+  yearOfBirth  Int?
 }
