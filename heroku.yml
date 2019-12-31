@@ -11,5 +11,3 @@ release:
   image: web
 run:
   web: node dist/server
-  config:
-    DATABASE_UR: DATABASE_URL
