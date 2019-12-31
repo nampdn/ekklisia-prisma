@@ -5,5 +5,9 @@ setup:
 build:
   docker:
     web: Dockerfile
+  config:
+    DATABASE_URL: DATABASE_URL
+release:
+  image: web
 run:
   web: node dist/server
