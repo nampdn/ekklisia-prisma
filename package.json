@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node dist/server",
     "clean": "rm -rf dist",
-    "build": "npm -s run clean && npm -s run generate && echo \"Compile TSC\" && tsc",
+    "build": "npm -s run clean && npm -s run generate && echo \"Compile TSC\" && ls ./node_modules/@types/nexus-prisma-typegen && tsc",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "echo \"Prisma generate\" && prisma2 generate",
     "generate:nexus": "echo \"Nexus generate\" && ts-node --transpile-only src/schema",
