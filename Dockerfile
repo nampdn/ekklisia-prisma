@@ -13,10 +13,7 @@ COPY . .
 
 RUN yarn build
 
-RUN echo "DATABASE_URL=$DATABASE_URL" > .env && \
-    cat .env;
-
 EXPOSE 4000
 
-ENTRYPOINT ["yarn"]
-CMD ["start"]
+ENTRYPOINT ["/bin/sh"]
+CMD ["-c", "echo \"DATABASE_URL=${DATABASE_URL}\" > .env && node dist/server"]
