@@ -14,7 +14,8 @@
     "generate:nexus": "ts-node --transpile-only src/schema",
     "postinstall": "test -n \"$NOYARNPOSTINSTALL\" || npm -s run generate",
     "dev": "ts-node-dev --no-notify --respawn --transpileOnly src/server",
-    "seed": "ts-node prisma/seed"
+    "seed": "ts-node prisma/seed",
+    "prestart": "echo \"DATABASE_URL=${DATABASE_URL}\" > .env"
   },
   "dependencies": {
     "@prisma/photon": "2.0.0-preview019",

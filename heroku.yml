@@ -7,5 +7,3 @@ build:
     web: Dockerfile
   config:
     DATABASE_URL: DATABASE_URL
-run:
-  web: echo "DATABASE_URL=${DATABASE_URL}" > .env && node dist/server
