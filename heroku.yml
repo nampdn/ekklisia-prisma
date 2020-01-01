@@ -7,5 +7,3 @@ build:
     web: Dockerfile
   config:
     DATABASE_URL: DATABASE_URL
-release:
-  image: web
