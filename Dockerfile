@@ -15,5 +15,4 @@ RUN yarn build
 
 EXPOSE 4000
 
-ENTRYPOINT ["/bin/sh"]
-CMD ["-c", "echo \"DATABASE_URL=${DATABASE_URL}\" > .env && node dist/server"]
+ENTRYPOINT ["/bin/sh", "-c", "echo \"DATABASE_URL=${DATABASE_URL}\" > .env && node dist/server"]
