@@ -8,7 +8,4 @@ build:
   config:
     DATABASE_URL: DATABASE_URL
 release:
-  command: ./scripts/release.sh
   image: web
-run:
-  web: node dist/server

@@ -13,6 +13,9 @@ COPY . .
 
 RUN yarn build
 
+RUN echo "DATABASE_URL=$DATABASE_URL" > .env && \
+    cat .env;
+
 EXPOSE 4000
 
 ENTRYPOINT ["yarn"]
