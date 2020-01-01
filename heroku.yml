@@ -8,4 +8,4 @@ build:
   config:
     DATABASE_URL: DATABASE_URL
 run:
-  web: /bin/sh -c echo "DATABASE_URL=${DATABASE_URL}" > .env && node dist/server
+  web: echo "DATABASE_URL=${DATABASE_URL}" > .env && node dist/server
