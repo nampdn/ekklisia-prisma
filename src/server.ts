@@ -3,8 +3,6 @@ import { permissions } from './permissions'
 import { schema } from './schema'
 import { createContext } from './context'
 
-console.log('DATABASE_URL:', process.env.DATABASE_URL)
-
 new GraphQLServer({
   schema,
   context: createContext,
