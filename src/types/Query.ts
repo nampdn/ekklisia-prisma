@@ -62,5 +62,14 @@ export const Query = queryType({
         })
       },
     })
+
+    t.field('groups', {
+      type: 'Group',
+      nullable: true,
+      list: true,
+      resolve: (parent, _, ctx) => {
+        return ctx.photon.groups(_)
+      },
+    })
   },
 })

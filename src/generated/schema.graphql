@@ -7,6 +7,13 @@ type AuthPayload {
   user: User!
 }
 
+type Group {
+  id: ID!
+  leader: Profile
+  members(after: ID, before: ID, first: Int, last: Int, skip: Int): [Profile!]!
+  name: String!
+}
+
 type Mutation {
   createDraft(content: String, title: String!): Post!
   deletePost(id: ID): Post
@@ -23,9 +30,17 @@ type Post {
   title: String!
 }
 
+type Profile {
+  email: String
+  fullName: String!
+  group: Group
+  id: ID!
+}
+
 type Query {
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
+  groups: [Group!]
   me: User
   post(id: ID): Post
 }

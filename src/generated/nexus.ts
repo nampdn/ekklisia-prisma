@@ -30,8 +30,10 @@ export interface NexusGenRootTypes {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Group: photon.Group;
   Mutation: {};
   Post: photon.Post;
+  Profile: photon.Profile;
   Query: {};
   User: photon.User;
   String: string;
@@ -49,6 +51,12 @@ export interface NexusGenFieldTypes {
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
   }
+  Group: { // field return type
+    id: string; // ID!
+    leader: NexusGenRootTypes['Profile'] | null; // Profile
+    members: NexusGenRootTypes['Profile'][]; // [Profile!]!
+    name: string; // String!
+  }
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
     deletePost: NexusGenRootTypes['Post'] | null; // Post
@@ -63,9 +71,16 @@ export interface NexusGenFieldTypes {
     published: boolean; // Boolean!
     title: string; // String!
   }
+  Profile: { // field return type
+    email: string | null; // String
+    fullName: string; // String!
+    group: NexusGenRootTypes['Group'] | null; // Group
+    id: string; // ID!
+  }
   Query: { // field return type
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
     filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
+    groups: NexusGenRootTypes['Group'][] | null; // [Group!]
     me: NexusGenRootTypes['User'] | null; // User
     post: NexusGenRootTypes['Post'] | null; // Post
   }
@@ -78,6 +93,15 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenArgTypes {
+  Group: {
+    members: { // args
+      after?: string | null; // ID
+      before?: string | null; // ID
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+  }
   Mutation: {
     createDraft: { // args
       content?: string | null; // String
@@ -114,7 +138,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "Mutation" | "Post" | "Query" | "User";
+export type NexusGenObjectNames = "AuthPayload" | "Group" | "Mutation" | "Post" | "Profile" | "Query" | "User";
 
 export type NexusGenInputNames = never;
 
