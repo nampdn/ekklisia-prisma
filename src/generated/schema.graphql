@@ -7,6 +7,8 @@ type AuthPayload {
   user: User!
 }
 
+scalar DateTime
+
 type Group {
   id: ID!
   leader: Profile
@@ -14,8 +16,46 @@ type Group {
   name: String!
 }
 
+input GroupCreateInput {
+  id: ID
+  leader: ProfileCreateOneWithoutLeaderInput
+  members: ProfileCreateManyWithoutMembersInput
+  name: String!
+  year: Int
+}
+
+input GroupCreateManyWithoutGroupsInput {
+  connect: [GroupWhereUniqueInput!]
+  create: [GroupCreateWithoutLeaderInput!]
+}
+
+input GroupCreateOneWithoutGroupInput {
+  connect: GroupWhereUniqueInput
+  create: GroupCreateWithoutMembersInput
+}
+
+input GroupCreateWithoutLeaderInput {
+  id: ID
+  members: ProfileCreateManyWithoutMembersInput
+  name: String!
+  year: Int
+}
+
+input GroupCreateWithoutMembersInput {
+  id: ID
+  leader: ProfileCreateOneWithoutLeaderInput
+  name: String!
+  year: Int
+}
+
+input GroupWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createDraft(content: String, title: String!): Post!
+  createGroup(data: GroupCreateInput!): Group!
+  createProfile(data: ProfileCreateInput!): Profile!
   deletePost(id: ID): Post
   login(email: String!, password: String!): AuthPayload!
   publish(id: ID): Post
@@ -30,11 +70,95 @@ type Post {
   title: String!
 }
 
+input PostCreateManyWithoutPostsInput {
+  connect: [PostWhereUniqueInput!]
+  create: [PostCreateWithoutAuthorInput!]
+}
+
+input PostCreateWithoutAuthorInput {
+  content: String
+  createdAt: DateTime
+  id: ID
+  published: Boolean
+  title: String!
+  updatedAt: DateTime
+}
+
+input PostWhereUniqueInput {
+  id: ID
+}
+
 type Profile {
   email: String
   fullName: String!
   group: Group
   id: ID!
+}
+
+input ProfileCreateInput {
+  birthday: DateTime
+  dayOfBirth: Int
+  email: String
+  facebookId: String
+  fullName: String!
+  gender: Boolean!
+  group: GroupCreateOneWithoutGroupInput
+  groups: GroupCreateManyWithoutGroupsInput
+  id: ID
+  joinDate: DateTime
+  monthOfBirth: Int
+  oldId: String
+  phoneNumber: String
+  users: UserCreateManyWithoutUsersInput
+  yearOfBirth: Int
+}
+
+input ProfileCreateManyWithoutMembersInput {
+  connect: [ProfileWhereUniqueInput!]
+  create: [ProfileCreateWithoutGroupInput!]
+}
+
+input ProfileCreateOneWithoutLeaderInput {
+  connect: ProfileWhereUniqueInput
+  create: ProfileCreateWithoutGroupsInput
+}
+
+input ProfileCreateWithoutGroupInput {
+  birthday: DateTime
+  dayOfBirth: Int
+  email: String
+  facebookId: String
+  fullName: String!
+  gender: Boolean!
+  groups: GroupCreateManyWithoutGroupsInput
+  id: ID
+  joinDate: DateTime
+  monthOfBirth: Int
+  oldId: String
+  phoneNumber: String
+  users: UserCreateManyWithoutUsersInput
+  yearOfBirth: Int
+}
+
+input ProfileCreateWithoutGroupsInput {
+  birthday: DateTime
+  dayOfBirth: Int
+  email: String
+  facebookId: String
+  fullName: String!
+  gender: Boolean!
+  group: GroupCreateOneWithoutGroupInput
+  id: ID
+  joinDate: DateTime
+  monthOfBirth: Int
+  oldId: String
+  phoneNumber: String
+  users: UserCreateManyWithoutUsersInput
+  yearOfBirth: Int
+}
+
+input ProfileWhereUniqueInput {
+  id: ID
 }
 
 type Query {
@@ -50,4 +174,22 @@ type User {
   id: ID!
   name: String
   posts: [Post!]!
+}
+
+input UserCreateManyWithoutUsersInput {
+  connect: [UserWhereUniqueInput!]
+  create: [UserCreateWithoutProfileInput!]
+}
+
+input UserCreateWithoutProfileInput {
+  email: String!
+  id: ID
+  name: String
+  password: String!
+  posts: PostCreateManyWithoutPostsInput
+}
+
+input UserWhereUniqueInput {
+  email: String
+  id: ID
 }

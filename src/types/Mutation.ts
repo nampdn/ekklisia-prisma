@@ -5,6 +5,9 @@ import { APP_SECRET, getUserId } from '../utils'
 
 export const Mutation = mutationType({
   definition(t) {
+    t.crud.createOneProfile({ alias: 'createProfile' })
+    t.crud.createOneGroup({ alias: 'createGroup' })
+
     t.field('signup', {
       type: 'AuthPayload',
       args: {

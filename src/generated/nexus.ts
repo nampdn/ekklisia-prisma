@@ -20,6 +20,126 @@ declare global {
 }
 
 export interface NexusGenInputs {
+  GroupCreateInput: { // input type
+    id?: string | null; // ID
+    leader?: NexusGenInputs['ProfileCreateOneWithoutLeaderInput'] | null; // ProfileCreateOneWithoutLeaderInput
+    members?: NexusGenInputs['ProfileCreateManyWithoutMembersInput'] | null; // ProfileCreateManyWithoutMembersInput
+    name: string; // String!
+    year?: number | null; // Int
+  }
+  GroupCreateManyWithoutGroupsInput: { // input type
+    connect?: NexusGenInputs['GroupWhereUniqueInput'][] | null; // [GroupWhereUniqueInput!]
+    create?: NexusGenInputs['GroupCreateWithoutLeaderInput'][] | null; // [GroupCreateWithoutLeaderInput!]
+  }
+  GroupCreateOneWithoutGroupInput: { // input type
+    connect?: NexusGenInputs['GroupWhereUniqueInput'] | null; // GroupWhereUniqueInput
+    create?: NexusGenInputs['GroupCreateWithoutMembersInput'] | null; // GroupCreateWithoutMembersInput
+  }
+  GroupCreateWithoutLeaderInput: { // input type
+    id?: string | null; // ID
+    members?: NexusGenInputs['ProfileCreateManyWithoutMembersInput'] | null; // ProfileCreateManyWithoutMembersInput
+    name: string; // String!
+    year?: number | null; // Int
+  }
+  GroupCreateWithoutMembersInput: { // input type
+    id?: string | null; // ID
+    leader?: NexusGenInputs['ProfileCreateOneWithoutLeaderInput'] | null; // ProfileCreateOneWithoutLeaderInput
+    name: string; // String!
+    year?: number | null; // Int
+  }
+  GroupWhereUniqueInput: { // input type
+    id?: string | null; // ID
+  }
+  PostCreateManyWithoutPostsInput: { // input type
+    connect?: NexusGenInputs['PostWhereUniqueInput'][] | null; // [PostWhereUniqueInput!]
+    create?: NexusGenInputs['PostCreateWithoutAuthorInput'][] | null; // [PostCreateWithoutAuthorInput!]
+  }
+  PostCreateWithoutAuthorInput: { // input type
+    content?: string | null; // String
+    createdAt?: any | null; // DateTime
+    id?: string | null; // ID
+    published?: boolean | null; // Boolean
+    title: string; // String!
+    updatedAt?: any | null; // DateTime
+  }
+  PostWhereUniqueInput: { // input type
+    id?: string | null; // ID
+  }
+  ProfileCreateInput: { // input type
+    birthday?: any | null; // DateTime
+    dayOfBirth?: number | null; // Int
+    email?: string | null; // String
+    facebookId?: string | null; // String
+    fullName: string; // String!
+    gender: boolean; // Boolean!
+    group?: NexusGenInputs['GroupCreateOneWithoutGroupInput'] | null; // GroupCreateOneWithoutGroupInput
+    groups?: NexusGenInputs['GroupCreateManyWithoutGroupsInput'] | null; // GroupCreateManyWithoutGroupsInput
+    id?: string | null; // ID
+    joinDate?: any | null; // DateTime
+    monthOfBirth?: number | null; // Int
+    oldId?: string | null; // String
+    phoneNumber?: string | null; // String
+    users?: NexusGenInputs['UserCreateManyWithoutUsersInput'] | null; // UserCreateManyWithoutUsersInput
+    yearOfBirth?: number | null; // Int
+  }
+  ProfileCreateManyWithoutMembersInput: { // input type
+    connect?: NexusGenInputs['ProfileWhereUniqueInput'][] | null; // [ProfileWhereUniqueInput!]
+    create?: NexusGenInputs['ProfileCreateWithoutGroupInput'][] | null; // [ProfileCreateWithoutGroupInput!]
+  }
+  ProfileCreateOneWithoutLeaderInput: { // input type
+    connect?: NexusGenInputs['ProfileWhereUniqueInput'] | null; // ProfileWhereUniqueInput
+    create?: NexusGenInputs['ProfileCreateWithoutGroupsInput'] | null; // ProfileCreateWithoutGroupsInput
+  }
+  ProfileCreateWithoutGroupInput: { // input type
+    birthday?: any | null; // DateTime
+    dayOfBirth?: number | null; // Int
+    email?: string | null; // String
+    facebookId?: string | null; // String
+    fullName: string; // String!
+    gender: boolean; // Boolean!
+    groups?: NexusGenInputs['GroupCreateManyWithoutGroupsInput'] | null; // GroupCreateManyWithoutGroupsInput
+    id?: string | null; // ID
+    joinDate?: any | null; // DateTime
+    monthOfBirth?: number | null; // Int
+    oldId?: string | null; // String
+    phoneNumber?: string | null; // String
+    users?: NexusGenInputs['UserCreateManyWithoutUsersInput'] | null; // UserCreateManyWithoutUsersInput
+    yearOfBirth?: number | null; // Int
+  }
+  ProfileCreateWithoutGroupsInput: { // input type
+    birthday?: any | null; // DateTime
+    dayOfBirth?: number | null; // Int
+    email?: string | null; // String
+    facebookId?: string | null; // String
+    fullName: string; // String!
+    gender: boolean; // Boolean!
+    group?: NexusGenInputs['GroupCreateOneWithoutGroupInput'] | null; // GroupCreateOneWithoutGroupInput
+    id?: string | null; // ID
+    joinDate?: any | null; // DateTime
+    monthOfBirth?: number | null; // Int
+    oldId?: string | null; // String
+    phoneNumber?: string | null; // String
+    users?: NexusGenInputs['UserCreateManyWithoutUsersInput'] | null; // UserCreateManyWithoutUsersInput
+    yearOfBirth?: number | null; // Int
+  }
+  ProfileWhereUniqueInput: { // input type
+    id?: string | null; // ID
+  }
+  UserCreateManyWithoutUsersInput: { // input type
+    connect?: NexusGenInputs['UserWhereUniqueInput'][] | null; // [UserWhereUniqueInput!]
+    create?: NexusGenInputs['UserCreateWithoutProfileInput'][] | null; // [UserCreateWithoutProfileInput!]
+  }
+  UserCreateWithoutProfileInput: { // input type
+    email: string; // String!
+    id?: string | null; // ID
+    name?: string | null; // String
+    password: string; // String!
+    posts?: NexusGenInputs['PostCreateManyWithoutPostsInput'] | null; // PostCreateManyWithoutPostsInput
+  }
+  UserWhereUniqueInput: { // input type
+    email?: string | null; // String
+    id?: string | null; // ID
+  }
 }
 
 export interface NexusGenEnums {
@@ -41,9 +161,28 @@ export interface NexusGenRootTypes {
   Float: number;
   Boolean: boolean;
   ID: string;
+  DateTime: any;
 }
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
+  GroupCreateInput: NexusGenInputs['GroupCreateInput'];
+  GroupCreateManyWithoutGroupsInput: NexusGenInputs['GroupCreateManyWithoutGroupsInput'];
+  GroupCreateOneWithoutGroupInput: NexusGenInputs['GroupCreateOneWithoutGroupInput'];
+  GroupCreateWithoutLeaderInput: NexusGenInputs['GroupCreateWithoutLeaderInput'];
+  GroupCreateWithoutMembersInput: NexusGenInputs['GroupCreateWithoutMembersInput'];
+  GroupWhereUniqueInput: NexusGenInputs['GroupWhereUniqueInput'];
+  PostCreateManyWithoutPostsInput: NexusGenInputs['PostCreateManyWithoutPostsInput'];
+  PostCreateWithoutAuthorInput: NexusGenInputs['PostCreateWithoutAuthorInput'];
+  PostWhereUniqueInput: NexusGenInputs['PostWhereUniqueInput'];
+  ProfileCreateInput: NexusGenInputs['ProfileCreateInput'];
+  ProfileCreateManyWithoutMembersInput: NexusGenInputs['ProfileCreateManyWithoutMembersInput'];
+  ProfileCreateOneWithoutLeaderInput: NexusGenInputs['ProfileCreateOneWithoutLeaderInput'];
+  ProfileCreateWithoutGroupInput: NexusGenInputs['ProfileCreateWithoutGroupInput'];
+  ProfileCreateWithoutGroupsInput: NexusGenInputs['ProfileCreateWithoutGroupsInput'];
+  ProfileWhereUniqueInput: NexusGenInputs['ProfileWhereUniqueInput'];
+  UserCreateManyWithoutUsersInput: NexusGenInputs['UserCreateManyWithoutUsersInput'];
+  UserCreateWithoutProfileInput: NexusGenInputs['UserCreateWithoutProfileInput'];
+  UserWhereUniqueInput: NexusGenInputs['UserWhereUniqueInput'];
 }
 
 export interface NexusGenFieldTypes {
@@ -59,6 +198,8 @@ export interface NexusGenFieldTypes {
   }
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
+    createGroup: NexusGenRootTypes['Group']; // Group!
+    createProfile: NexusGenRootTypes['Profile']; // Profile!
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
     publish: NexusGenRootTypes['Post'] | null; // Post
@@ -107,6 +248,12 @@ export interface NexusGenArgTypes {
       content?: string | null; // String
       title: string; // String!
     }
+    createGroup: { // args
+      data: NexusGenInputs['GroupCreateInput']; // GroupCreateInput!
+    }
+    createProfile: { // args
+      data: NexusGenInputs['ProfileCreateInput']; // ProfileCreateInput!
+    }
     deletePost: { // args
       id?: string | null; // ID
     }
@@ -140,13 +287,13 @@ export interface NexusGenInheritedFields {}
 
 export type NexusGenObjectNames = "AuthPayload" | "Group" | "Mutation" | "Post" | "Profile" | "Query" | "User";
 
-export type NexusGenInputNames = never;
+export type NexusGenInputNames = "GroupCreateInput" | "GroupCreateManyWithoutGroupsInput" | "GroupCreateOneWithoutGroupInput" | "GroupCreateWithoutLeaderInput" | "GroupCreateWithoutMembersInput" | "GroupWhereUniqueInput" | "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostWhereUniqueInput" | "ProfileCreateInput" | "ProfileCreateManyWithoutMembersInput" | "ProfileCreateOneWithoutLeaderInput" | "ProfileCreateWithoutGroupInput" | "ProfileCreateWithoutGroupsInput" | "ProfileWhereUniqueInput" | "UserCreateManyWithoutUsersInput" | "UserCreateWithoutProfileInput" | "UserWhereUniqueInput";
 
 export type NexusGenEnumNames = never;
 
 export type NexusGenInterfaceNames = never;
 
-export type NexusGenScalarNames = "Boolean" | "Float" | "ID" | "Int" | "String";
+export type NexusGenScalarNames = "Boolean" | "DateTime" | "Float" | "ID" | "Int" | "String";
 
 export type NexusGenUnionNames = never;
 

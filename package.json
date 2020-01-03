@@ -15,11 +15,13 @@
     "postinstall": "test -n \"$NOYARNPOSTINSTALL\" || npm -s run generate",
     "dev": "ts-node-dev --no-notify --respawn --transpileOnly src/server",
     "seed": "ts-node prisma/seed",
+    "seed:airtable": "ts-node prisma/airtable",
     "prestart": "echo \"DATABASE_URL=${DATABASE_URL}\" > .env"
   },
   "dependencies": {
     "@prisma/photon": "2.0.0-preview019",
     "@prisma/sdk": "0.0.105",
+    "airtable": "0.8.1",
     "bcryptjs": "2.4.3",
     "dotenv": "8.2.0",
     "graphql": "14.5.8",
@@ -34,11 +36,12 @@
     "typescript": "3.7.4"
   },
   "devDependencies": {
+    "@types/airtable": "0.5.7",
     "@types/bcryptjs": "2.4.2",
+    "@types/dotenv": "8.2.0",
     "@types/jsonwebtoken": "8.3.5",
     "@types/node": "12.12.22",
-    "@types/ws": "6.0.4",
-    "@types/dotenv": "8.2.0"
+    "@types/ws": "6.0.4"
   },
   "prettier": {
     "singleQuote": true,
