@@ -2,6 +2,21 @@
 ### Do not make changes to this file directly
 
 
+input ActivityCreateManyWithoutActivitiesInput {
+  connect: [ActivityWhereUniqueInput!]
+  create: [ActivityCreateWithoutOrgInput!]
+}
+
+input ActivityCreateWithoutOrgInput {
+  id: ID
+  name: String!
+  type: String!
+}
+
+input ActivityWhereUniqueInput {
+  id: ID
+}
+
 type AuthPayload {
   token: String!
   user: User!
@@ -21,6 +36,8 @@ input GroupCreateInput {
   leader: ProfileCreateOneWithoutLeaderInput
   members: ProfileCreateManyWithoutMembersInput
   name: String!
+  org: OrgCreateOneWithoutOrgInput
+  slug: String
   year: Int
 }
 
@@ -38,6 +55,8 @@ input GroupCreateWithoutLeaderInput {
   id: ID
   members: ProfileCreateManyWithoutMembersInput
   name: String!
+  org: OrgCreateOneWithoutOrgInput
+  slug: String
   year: Int
 }
 
@@ -45,11 +64,14 @@ input GroupCreateWithoutMembersInput {
   id: ID
   leader: ProfileCreateOneWithoutLeaderInput
   name: String!
+  org: OrgCreateOneWithoutOrgInput
+  slug: String
   year: Int
 }
 
 input GroupWhereUniqueInput {
   id: ID
+  slug: String
 }
 
 type Mutation {
@@ -60,6 +82,21 @@ type Mutation {
   login(email: String!, password: String!): AuthPayload!
   publish(id: ID): Post
   signup(email: String!, name: String, password: String!): AuthPayload!
+}
+
+input OrgCreateOneWithoutOrgInput {
+  connect: OrgWhereUniqueInput
+  create: OrgCreateWithoutGroupsInput
+}
+
+input OrgCreateWithoutGroupsInput {
+  activities: ActivityCreateManyWithoutActivitiesInput
+  id: ID
+  name: String!
+}
+
+input OrgWhereUniqueInput {
+  id: ID
 }
 
 type Post {
@@ -109,6 +146,7 @@ input ProfileCreateInput {
   monthOfBirth: Int
   oldId: String
   phoneNumber: String
+  slug: String
   users: UserCreateManyWithoutUsersInput
   yearOfBirth: Int
 }
@@ -136,6 +174,7 @@ input ProfileCreateWithoutGroupInput {
   monthOfBirth: Int
   oldId: String
   phoneNumber: String
+  slug: String
   users: UserCreateManyWithoutUsersInput
   yearOfBirth: Int
 }
@@ -153,12 +192,15 @@ input ProfileCreateWithoutGroupsInput {
   monthOfBirth: Int
   oldId: String
   phoneNumber: String
+  slug: String
   users: UserCreateManyWithoutUsersInput
   yearOfBirth: Int
 }
 
 input ProfileWhereUniqueInput {
   id: ID
+  oldId: String
+  slug: String
 }
 
 type Query {
