@@ -35,6 +35,11 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@barajs/formula@3.0.0-alpha.481":
+  version "3.0.0-alpha.481"
+  resolved "https://registry.npmjs.org/@barajs/formula/-/formula-3.0.0-alpha.481.tgz#9f7d88230d10c23f70d0ece5eacdcfa3e07a0eba"
+  integrity sha512-8TJOloV+gMlYg0w3QOyyNlsYA8Z98nBXqpAv7do/Mmupg2gSSg/hrIvZsUETDVof0ic5yaVR1JSDhQ42JCkeSg==
+
 "@prisma/engine-core@2.0.41":
   version "2.0.41"
   resolved "https://registry.npmjs.org/@prisma/engine-core/-/engine-core-2.0.41.tgz#23c8e388352c0712df70ccc78b65012468be1c56"

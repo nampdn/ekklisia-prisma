@@ -30,7 +30,8 @@ model Profile {
   id           String    @default(cuid()) @id
   fullName     String
   gender       Boolean
-  oldId        String?
+  oldId        String?   @unique
+  slug         String?   @unique
   email        String?
   facebookId   String?
   phoneNumber  String?
@@ -44,6 +45,7 @@ model Profile {
 model Group {
   id      String    @default(cuid()) @id
   name    String
+  slug    String?   @unique
   year    Int?
   leader  Profile?  @relation(name: "GroupLeader")
   members Profile[] @relation(name: "GroupMembers")

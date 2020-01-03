@@ -41,7 +41,7 @@ export const getAllProfiles = async () => {
               birthday: record.get('birthday') || '',
               joinDate: record.get('joinDate') || '',
               facebookId: record.get('facebookId') || '',
-              oldId: record.id + '$' + record.get('ID'),
+              oldId: record.id + '$' + record.get('ID') || 'new',
               gender: record.get('gender'),
               phoneNumber: record.get('phone_number') || '',
               address: {
@@ -52,8 +52,7 @@ export const getAllProfiles = async () => {
               job: record.get('job'),
               memberType: record.get('memberType'),
             }
-            console.log(profile)
-            // profileList.push(transformProfileToPrisma(profile))
+            profileList.push(profile)
           })
           fetchNextPage()
         },
@@ -68,6 +67,42 @@ export const getAllProfiles = async () => {
       )
   })
 }
+
+export const getGroups = async () => {
+  return new Promise((resolve, reject) => {
+    const groupList: any[] = []
+    base('Group2020')
+      .select({
+        maxRecords: 1000,
+        pageSize: 100,
+        view: 'Grid view',
+      })
+      .eachPage(
+        function page(records: any, fetchNextPage: () => void) {
+          records.forEach((record: any) => {
+            const group = {
+              id: record.id,
+              name: record.get('name'),
+              leader: record.get('leader'),
+              members: record.get('members'),
+            }
+            console.log(group)
+            groupList.push(group)
+          })
+          fetchNextPage()
+        },
+        function done(err: any) {
+          if (err) {
+            console.error(err)
+            reject(err)
+          } else {
+            resolve(groupList)
+          }
+        },
+      )
+  })
+}
 ;(async () => {
-  await getAllProfiles()
+  //   await getAllProfiles()
+  await getGroups()
 })()

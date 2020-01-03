@@ -19,6 +19,7 @@
     "prestart": "echo \"DATABASE_URL=${DATABASE_URL}\" > .env"
   },
   "dependencies": {
+    "@barajs/formula": "3.0.0-alpha.481",
     "@prisma/photon": "2.0.0-preview019",
     "@prisma/sdk": "0.0.105",
     "airtable": "0.8.1",
