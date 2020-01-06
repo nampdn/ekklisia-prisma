@@ -71,5 +71,14 @@ export const Query = queryType({
         return ctx.photon.groups(_)
       },
     })
+
+    t.field('profiles', {
+      type: 'Profile',
+      nullable: true,
+      list: true,
+      resolve: (parent, _, ctx) => {
+        return ctx.photon.profiles(_)
+      },
+    })
   },
 })

@@ -62,6 +62,7 @@ export const getAllProfiles = async (): Promise<any[]> => {
             profile.joinDate = profile.joinDate
               ? new Date(profile.joinDate)
               : null
+            if (!profile.id) delete profile.id
             profileList.push(profile)
           })
           fetchNextPage()
@@ -119,20 +120,24 @@ export const getGroups = async () => {
   console.log(`orgs: ${orgs[0].name}`)
   const org = orgs[0]
   for (const profile of profiles) {
-    const newProfile = await photon.profiles.upsert({
-      where: {
-        oldId: profile.oldId,
-      },
-      create: {
-        ...profile,
-        org: { connect: { id: org.id } },
-      },
-      update: {
-        ...profile,
-        org: { connect: { id: org.id } },
-      },
-    })
-    console.log('created profile', newProfile)
+    try {
+      const newProfile = await photon.profiles.upsert({
+        where: {
+          oldId: profile.oldId,
+        },
+        create: {
+          ...profile,
+          org: { connect: { id: org.id } },
+        },
+        update: {
+          ...profile,
+          org: { connect: { id: org.id } },
+        },
+      })
+      console.log('created profile', newProfile)
+    } catch (err) {
+      console.log('Profile dupplicated', profile.name, err.message)
+    }
   }
   // await getGroups()
 })()
