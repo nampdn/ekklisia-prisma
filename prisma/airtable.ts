@@ -1,7 +1,10 @@
 import * as AirTable from 'airtable'
 import * as dotenv from 'dotenv'
+import { Photon } from '@prisma/photon'
 
 dotenv.config()
+
+const photon = new Photon()
 
 const API_KEY = process.env.AIRTABLE_API_KEY
 const BASE_ID = process.env.AIRTABLE_BASE_ID
@@ -23,7 +26,7 @@ AT.configure({
 
 export const base = AT.base(BASE_ID)
 
-export const getAllProfiles = async () => {
+export const getAllProfiles = async (): Promise<any[]> => {
   return new Promise((resolve, reject) => {
     const profileList: any[] = []
     base('Profile')
@@ -44,14 +47,21 @@ export const getAllProfiles = async () => {
               oldId: record.id + '$' + record.get('ID') || 'new',
               gender: record.get('gender'),
               phoneNumber: record.get('phone_number') || '',
-              address: {
-                street: record.get('address') || '',
-                commune: record.get('ward') || '',
-                district: record.get('district') || '',
-              },
+              // address: {
+              //   street: record.get('address') || '',
+              //   commune: record.get('ward') || '',
+              //   district: record.get('district') || '',
+              // },
               job: record.get('job'),
-              memberType: record.get('memberType'),
+              // memberType: record.get('memberType'),
             }
+
+            profile.birthday = profile.birthday
+              ? new Date(profile.birthday)
+              : null
+            profile.joinDate = profile.joinDate
+              ? new Date(profile.joinDate)
+              : null
             profileList.push(profile)
           })
           fetchNextPage()
@@ -103,6 +113,26 @@ export const getGroups = async () => {
   })
 }
 ;(async () => {
-  //   await getAllProfiles()
-  await getGroups()
+  const profiles = await getAllProfiles()
+  console.log('Total profiles:', profiles.length)
+  const orgs = await photon.orgs.findMany({ first: 1000 })
+  console.log(`orgs: ${orgs[0].name}`)
+  const org = orgs[0]
+  for (const profile of profiles) {
+    const newProfile = await photon.profiles.upsert({
+      where: {
+        oldId: profile.oldId,
+      },
+      create: {
+        ...profile,
+        org: { connect: { id: org.id } },
+      },
+      update: {
+        ...profile,
+        org: { connect: { id: org.id } },
+      },
+    })
+    console.log('created profile', newProfile)
+  }
+  // await getGroups()
 })()

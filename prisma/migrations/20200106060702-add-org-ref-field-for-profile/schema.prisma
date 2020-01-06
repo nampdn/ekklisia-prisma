@@ -4,7 +4,7 @@ generator photon {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Post {
@@ -41,8 +41,6 @@ model Profile {
   monthOfBirth Int?
   yearOfBirth  Int?
   org          Org?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
 }
 
 model Group {
