@@ -23,8 +23,10 @@
     "@prisma/photon": "2.0.0-preview019",
     "@prisma/sdk": "0.0.105",
     "airtable": "0.8.1",
+    "axios": "0.19.0",
     "bcryptjs": "2.4.3",
     "dotenv": "8.2.0",
+    "google-libphonenumber": "3.2.6",
     "graphql": "14.5.8",
     "graphql-shield": "5.7.3",
     "graphql-yoga": "1.18.3",
@@ -34,12 +36,14 @@
     "prisma2": "2.0.0-preview019",
     "ts-node": "8.5.4",
     "ts-node-dev": "1.0.0-pre.44",
-    "typescript": "3.7.4"
+    "typescript": "3.7.4",
+    "vikit": "0.3.4"
   },
   "devDependencies": {
     "@types/airtable": "0.5.7",
     "@types/bcryptjs": "2.4.2",
     "@types/dotenv": "8.2.0",
+    "@types/google-libphonenumber": "7.4.17",
     "@types/jsonwebtoken": "8.3.5",
     "@types/node": "12.12.22",
     "@types/ws": "6.0.4"

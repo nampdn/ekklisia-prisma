@@ -5,6 +5,11 @@ export const Profile = objectType({
   definition(t) {
     t.model.id()
     t.model.fullName()
+    t.model.facebookId()
+    t.model.oldId()
+    t.model.joinDate()
+    t.model.birthday()
+    t.model.gender()
     t.model.email()
     t.model.group()
   },

@@ -1,13 +1,40 @@
 import * as AirTable from 'airtable'
 import * as dotenv from 'dotenv'
 import { Photon } from '@prisma/photon'
+import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
+import { changePhonePrefix } from 'vikit'
 
 dotenv.config()
 
-const photon = new Photon()
+const photon = new Photon({ datasources: { db: process.env.DATABASE_URL } })
 
 const API_KEY = process.env.AIRTABLE_API_KEY
 const BASE_ID = process.env.AIRTABLE_BASE_ID
+
+export const formatPhoneNumber = (phoneNumber: string) => {
+  const phoneUtil = PhoneNumberUtil.getInstance()
+  const number = phoneUtil.parseAndKeepRawInput(phoneNumber, 'VN')
+  const formattedNumber = phoneUtil.format(number, PhoneNumberFormat.E164)
+  return formattedNumber
+}
+
+export const isPhoneValid = (phoneNumber: string, country = 'VN') => {
+  const phoneUtil = PhoneNumberUtil.getInstance()
+  const number = phoneUtil.parseAndKeepRawInput(phoneNumber, country)
+  return phoneUtil.isValidNumber(number)
+}
+
+const correctPhoneNumber = (phoneNumber: string) => {
+  if (phoneNumber) {
+    const newPhone = changePhonePrefix(phoneNumber)
+    const isValidPhone = isPhoneValid(newPhone)
+    if (isValidPhone) {
+      return formatPhoneNumber(newPhone)
+    }
+    return null
+  }
+  return null
+}
 
 if (API_KEY && BASE_ID) {
   console.log(`AIRTABLE API KEY: ${API_KEY} - BASE ID: ${BASE_ID}`)
@@ -40,19 +67,19 @@ export const getAllProfiles = async (): Promise<any[]> => {
           records.forEach((record: any) => {
             const profile = {
               id: record.id,
-              fullName: record.get('fullName'),
+              fullName: record.get('fullName').replace('  ', ' '),
               birthday: record.get('birthday') || '',
               joinDate: record.get('joinDate') || '',
               facebookId: record.get('facebookId') || '',
               oldId: record.id + '$' + record.get('ID') || 'new',
               gender: record.get('gender'),
-              phoneNumber: record.get('phone_number') || '',
+              phoneNumber: correctPhoneNumber(record.get('phoneNumber')) || '',
               // address: {
               //   street: record.get('address') || '',
               //   commune: record.get('ward') || '',
               //   district: record.get('district') || '',
               // },
-              job: record.get('job'),
+              // job: record.get('job'),
               // memberType: record.get('memberType'),
             }
 
@@ -62,7 +89,6 @@ export const getAllProfiles = async (): Promise<any[]> => {
             profile.joinDate = profile.joinDate
               ? new Date(profile.joinDate)
               : null
-            if (!profile.id) delete profile.id
             profileList.push(profile)
           })
           fetchNextPage()
@@ -79,10 +105,12 @@ export const getAllProfiles = async (): Promise<any[]> => {
   })
 }
 
-export const getGroups = async () => {
+export const getGroups = async (
+  groupName: string = 'Group2019',
+): Promise<any[]> => {
   return new Promise((resolve, reject) => {
     const groupList: any[] = []
-    base('Group2020')
+    base(groupName)
       .select({
         maxRecords: 1000,
         pageSize: 100,
@@ -96,8 +124,8 @@ export const getGroups = async () => {
               name: record.get('name'),
               leader: record.get('leader'),
               members: record.get('members'),
+              year: record.get('year'),
             }
-            console.log(group)
             groupList.push(group)
           })
           fetchNextPage()
@@ -113,7 +141,8 @@ export const getGroups = async () => {
       )
   })
 }
-;(async () => {
+
+const seedProfile = async () => {
   const profiles = await getAllProfiles()
   console.log('Total profiles:', profiles.length)
   const orgs = await photon.orgs.findMany({ first: 1000 })
@@ -140,4 +169,81 @@ export const getGroups = async () => {
     }
   }
   // await getGroups()
-})()
+}
+
+const seedGroup = async () => {
+  const groups = await getGroups()
+  for (const group of groups) {
+    const { id, name, year, leader: listLeader, members } = group
+    const leader = listLeader[0]
+    const groupData = {
+      id,
+      name,
+      year,
+    }
+    try {
+      console.log(`Creating Group: ${JSON.stringify(groupData, null, 2)}`)
+      const newGroup = await photon.groups.upsert({
+        where: { id },
+        update: {
+          id,
+          name,
+          year,
+        },
+        create: {
+          id,
+          name,
+          year,
+        },
+      })
+      if (newGroup) {
+        console.log(`Upsert group ${newGroup.name} (${newGroup.year})`)
+        try {
+          const leaderProfile = await photon.profiles.findOne({
+            where: { id: leader },
+          })
+          if (leaderProfile) {
+            await photon.groups.update({
+              where: { id: newGroup.id },
+              data: { leader: { connect: { id: leader } } },
+            })
+          } else {
+            console.warn(`Not found leader profile: ${leader}`)
+          }
+        } catch (err) {
+          console.error(`Not found leader`)
+        }
+        for (const member of members) {
+          const profile = await photon.profiles.findOne({
+            where: { id: member },
+          })
+          if (profile) {
+            const updatedGroup = await photon.groups.update({
+              where: { id },
+              data: { members: { connect: { id: member } } },
+            })
+            console.log(
+              `Connected member ${profile.fullName} to group ${updatedGroup.name}`,
+            )
+          } else {
+            console.warn(
+              `Not found member id ${member} in database, check it again!`,
+            )
+          }
+        }
+      }
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
+const main = async () => {
+  console.log(process.env.DATABASE_URL)
+  console.log('SEED: Profile')
+  await seedProfile()
+  console.log('SEED: Group')
+  await seedGroup()
+}
+
+main()

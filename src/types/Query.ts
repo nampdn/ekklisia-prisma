@@ -3,6 +3,8 @@ import { getUserId } from '../utils'
 
 export const Query = queryType({
   definition(t) {
+    t.crud.profiles()
+
     t.field('me', {
       type: 'User',
       nullable: true,
@@ -69,15 +71,6 @@ export const Query = queryType({
       list: true,
       resolve: (parent, _, ctx) => {
         return ctx.photon.groups(_)
-      },
-    })
-
-    t.field('profiles', {
-      type: 'Profile',
-      nullable: true,
-      list: true,
-      resolve: (parent, _, ctx) => {
-        return ctx.photon.profiles(_)
       },
     })
   },

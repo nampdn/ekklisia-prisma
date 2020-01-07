@@ -43,7 +43,7 @@ input GroupCreateInput {
 
 input GroupCreateManyWithoutGroupsInput {
   connect: [GroupWhereUniqueInput!]
-  create: [GroupCreateWithoutLeaderInput!]
+  create: [GroupCreateWithoutOrgInput!]
 }
 
 input GroupCreateOneWithoutGroupInput {
@@ -51,20 +51,20 @@ input GroupCreateOneWithoutGroupInput {
   create: GroupCreateWithoutMembersInput
 }
 
-input GroupCreateWithoutLeaderInput {
+input GroupCreateWithoutMembersInput {
   id: ID
-  members: ProfileCreateManyWithoutMembersInput
+  leader: ProfileCreateOneWithoutLeaderInput
   name: String!
   org: OrgCreateOneWithoutOrgInput
   slug: String
   year: Int
 }
 
-input GroupCreateWithoutMembersInput {
+input GroupCreateWithoutOrgInput {
   id: ID
   leader: ProfileCreateOneWithoutLeaderInput
+  members: ProfileCreateManyWithoutMembersInput
   name: String!
-  org: OrgCreateOneWithoutOrgInput
   slug: String
   year: Int
 }
@@ -86,11 +86,12 @@ type Mutation {
 
 input OrgCreateOneWithoutOrgInput {
   connect: OrgWhereUniqueInput
-  create: OrgCreateWithoutGroupsInput
+  create: OrgCreateWithoutProfilesInput
 }
 
-input OrgCreateWithoutGroupsInput {
+input OrgCreateWithoutProfilesInput {
   activities: ActivityCreateManyWithoutActivitiesInput
+  groups: GroupCreateManyWithoutGroupsInput
   id: ID
   name: String!
 }
@@ -126,27 +127,35 @@ input PostWhereUniqueInput {
 }
 
 type Profile {
+  birthday: DateTime
   email: String
+  facebookId: String
   fullName: String!
+  gender: String
   group: Group
   id: ID!
+  joinDate: DateTime
+  oldId: String
 }
 
 input ProfileCreateInput {
   birthday: DateTime
+  createdAt: DateTime
   dayOfBirth: Int
   email: String
   facebookId: String
   fullName: String!
-  gender: Boolean!
+  gender: String
   group: GroupCreateOneWithoutGroupInput
   groups: GroupCreateManyWithoutGroupsInput
   id: ID
   joinDate: DateTime
   monthOfBirth: Int
   oldId: String
+  org: OrgCreateOneWithoutOrgInput
   phoneNumber: String
   slug: String
+  updatedAt: DateTime
   users: UserCreateManyWithoutUsersInput
   yearOfBirth: Int
 }
@@ -163,36 +172,42 @@ input ProfileCreateOneWithoutLeaderInput {
 
 input ProfileCreateWithoutGroupInput {
   birthday: DateTime
+  createdAt: DateTime
   dayOfBirth: Int
   email: String
   facebookId: String
   fullName: String!
-  gender: Boolean!
+  gender: String
   groups: GroupCreateManyWithoutGroupsInput
   id: ID
   joinDate: DateTime
   monthOfBirth: Int
   oldId: String
+  org: OrgCreateOneWithoutOrgInput
   phoneNumber: String
   slug: String
+  updatedAt: DateTime
   users: UserCreateManyWithoutUsersInput
   yearOfBirth: Int
 }
 
 input ProfileCreateWithoutGroupsInput {
   birthday: DateTime
+  createdAt: DateTime
   dayOfBirth: Int
   email: String
   facebookId: String
   fullName: String!
-  gender: Boolean!
+  gender: String
   group: GroupCreateOneWithoutGroupInput
   id: ID
   joinDate: DateTime
   monthOfBirth: Int
   oldId: String
+  org: OrgCreateOneWithoutOrgInput
   phoneNumber: String
   slug: String
+  updatedAt: DateTime
   users: UserCreateManyWithoutUsersInput
   yearOfBirth: Int
 }
@@ -209,6 +224,7 @@ type Query {
   groups: [Group!]
   me: User
   post(id: ID): Post
+  profiles(after: ID, before: ID, first: Int, last: Int, skip: Int): [Profile!]!
 }
 
 type User {
