@@ -4,7 +4,7 @@ generator photon {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Post {
@@ -27,11 +27,11 @@ model User {
 }
 
 model Profile {
-  id           String       @default(cuid()) @id
+  id           String    @default(cuid()) @id
   fullName     String
   gender       String?
-  oldId        String?      @unique
-  slug         String?      @unique
+  oldId        String?   @unique
+  slug         String?   @unique
   email        String?
   facebookId   String?
   phoneNumber  String?
@@ -41,34 +41,17 @@ model Profile {
   monthOfBirth Int?
   yearOfBirth  Int?
   org          Org?
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  leader       Group[]      @relation(name: "GroupLeader")
-  member       Group[]      @relation(name: "GroupMembers")
-  attendances  Attendance[] @relation(name: "AttendanceProfile")
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
 
 model Group {
-  id        String    @default(cuid()) @id
-  name      String
-  slug      String?   @unique
-  year      Int?
-  stage     String
-  leader    Profile?  @relation(name: "GroupLeader")
-  members   Profile[] @relation(name: "GroupMembers")
-  startAt   DateTime?
-  endAt     DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-}
-
-model GroupEnrollment {
-  id        String   @default(cuid()) @id
-  group     Group
-  profile   Profile
-  reason    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id      String    @default(cuid()) @id
+  name    String
+  slug    String?   @unique
+  year    Int?
+  leader  Profile?  @relation(name: "GroupLeader")
+  members Profile[] @relation(name: "GroupMembers")
 }
 
 model Org {

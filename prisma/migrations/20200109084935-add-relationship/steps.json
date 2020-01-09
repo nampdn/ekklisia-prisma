@@ -1,0 +1,101 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Profile",
+      "field": "leader",
+      "type": "Group",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "leader"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "leader"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"GroupLeader\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Profile",
+      "field": "member",
+      "type": "Group",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "member"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "member"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"GroupMembers\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Profile",
+      "field": "attendances",
+      "type": "Attendance",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "attendances"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "attendances"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceProfile\""
+    }
+  ]
+}
