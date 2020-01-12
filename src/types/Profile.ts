@@ -11,6 +11,6 @@ export const Profile = objectType({
     t.model.birthday()
     t.model.gender()
     t.model.email()
-    t.model.group()
+    t.model.phoneNumber()
   },
 })

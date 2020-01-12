@@ -106,7 +106,7 @@ export const getAllProfiles = async (): Promise<any[]> => {
 }
 
 export const getGroups = async (
-  groupName: string = 'Group2019',
+  groupName: string = 'Group2020',
 ): Promise<any[]> => {
   return new Promise((resolve, reject) => {
     const groupList: any[] = []
@@ -152,7 +152,8 @@ const seedProfile = async () => {
     try {
       const newProfile = await photon.profiles.upsert({
         where: {
-          oldId: profile.oldId,
+          id: profile.id,
+          // oldId: profile.oldId,
         },
         create: {
           ...profile,
@@ -194,6 +195,7 @@ const seedGroup = async () => {
           id,
           name,
           year,
+          stage: 'forming',
         },
       })
       if (newGroup) {
