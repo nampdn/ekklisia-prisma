@@ -199,7 +199,7 @@ const seedGroup = async () => {
         },
       })
       if (newGroup) {
-        console.log(`Upsert group ${newGroup.name} (${newGroup.year})`)
+        console.log(`Upserted group ${newGroup.name} (${newGroup.year})`)
         try {
           const leaderProfile = await photon.profiles.findOne({
             where: { id: leader },
