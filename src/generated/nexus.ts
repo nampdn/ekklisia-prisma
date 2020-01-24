@@ -24,46 +24,122 @@ export interface NexusGenInputs {
     connect?: NexusGenInputs['ActivityWhereUniqueInput'][] | null; // [ActivityWhereUniqueInput!]
     create?: NexusGenInputs['ActivityCreateWithoutOrgInput'][] | null; // [ActivityCreateWithoutOrgInput!]
   }
+  ActivityCreateOneWithoutActivityInput: { // input type
+    connect?: NexusGenInputs['ActivityWhereUniqueInput'] | null; // ActivityWhereUniqueInput
+    create?: NexusGenInputs['ActivityCreateWithoutSchedulesInput'] | null; // ActivityCreateWithoutSchedulesInput
+  }
   ActivityCreateWithoutOrgInput: { // input type
     id?: string | null; // ID
     name: string; // String!
+    schedules?: NexusGenInputs['ScheduleCreateManyWithoutSchedulesInput'] | null; // ScheduleCreateManyWithoutSchedulesInput
+    type: string; // String!
+  }
+  ActivityCreateWithoutSchedulesInput: { // input type
+    id?: string | null; // ID
+    name: string; // String!
+    org: NexusGenInputs['OrgCreateOneWithoutOrgInput']; // OrgCreateOneWithoutOrgInput!
     type: string; // String!
   }
   ActivityWhereUniqueInput: { // input type
     id?: string | null; // ID
   }
+  AttendanceCreateManyWithoutAttendancesInput: { // input type
+    connect?: NexusGenInputs['AttendanceWhereUniqueInput'][] | null; // [AttendanceWhereUniqueInput!]
+    create?: NexusGenInputs['AttendanceCreateWithoutMemberInput'][] | null; // [AttendanceCreateWithoutMemberInput!]
+  }
+  AttendanceCreateWithoutMemberInput: { // input type
+    createdAt?: any | null; // DateTime
+    id?: string | null; // ID
+    present: boolean; // Boolean!
+    schedule: NexusGenInputs['ScheduleCreateOneWithoutScheduleInput']; // ScheduleCreateOneWithoutScheduleInput!
+    status: string; // String!
+    updatedAt?: any | null; // DateTime
+  }
+  AttendanceWhereUniqueInput: { // input type
+    id?: string | null; // ID
+  }
   GroupCreateInput: { // input type
+    createdAt?: any | null; // DateTime
+    endAt?: any | null; // DateTime
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
     id?: string | null; // ID
     leader?: NexusGenInputs['ProfileCreateOneWithoutLeaderInput'] | null; // ProfileCreateOneWithoutLeaderInput
     members?: NexusGenInputs['ProfileCreateManyWithoutMembersInput'] | null; // ProfileCreateManyWithoutMembersInput
     name: string; // String!
     org?: NexusGenInputs['OrgCreateOneWithoutOrgInput'] | null; // OrgCreateOneWithoutOrgInput
     slug?: string | null; // String
+    stage: string; // String!
+    startAt?: any | null; // DateTime
+    updatedAt?: any | null; // DateTime
     year?: number | null; // Int
   }
   GroupCreateManyWithoutGroupsInput: { // input type
     connect?: NexusGenInputs['GroupWhereUniqueInput'][] | null; // [GroupWhereUniqueInput!]
     create?: NexusGenInputs['GroupCreateWithoutOrgInput'][] | null; // [GroupCreateWithoutOrgInput!]
   }
-  GroupCreateOneWithoutGroupInput: { // input type
-    connect?: NexusGenInputs['GroupWhereUniqueInput'] | null; // GroupWhereUniqueInput
-    create?: NexusGenInputs['GroupCreateWithoutMembersInput'] | null; // GroupCreateWithoutMembersInput
+  GroupCreateManyWithoutLeaderInput: { // input type
+    connect?: NexusGenInputs['GroupWhereUniqueInput'][] | null; // [GroupWhereUniqueInput!]
+    create?: NexusGenInputs['GroupCreateWithoutLeaderInput'][] | null; // [GroupCreateWithoutLeaderInput!]
+  }
+  GroupCreateManyWithoutMemberInput: { // input type
+    connect?: NexusGenInputs['GroupWhereUniqueInput'][] | null; // [GroupWhereUniqueInput!]
+    create?: NexusGenInputs['GroupCreateWithoutMembersInput'][] | null; // [GroupCreateWithoutMembersInput!]
+  }
+  GroupCreateWithoutLeaderInput: { // input type
+    createdAt?: any | null; // DateTime
+    endAt?: any | null; // DateTime
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
+    id?: string | null; // ID
+    members?: NexusGenInputs['ProfileCreateManyWithoutMembersInput'] | null; // ProfileCreateManyWithoutMembersInput
+    name: string; // String!
+    org?: NexusGenInputs['OrgCreateOneWithoutOrgInput'] | null; // OrgCreateOneWithoutOrgInput
+    slug?: string | null; // String
+    stage: string; // String!
+    startAt?: any | null; // DateTime
+    updatedAt?: any | null; // DateTime
+    year?: number | null; // Int
   }
   GroupCreateWithoutMembersInput: { // input type
+    createdAt?: any | null; // DateTime
+    endAt?: any | null; // DateTime
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
     id?: string | null; // ID
     leader?: NexusGenInputs['ProfileCreateOneWithoutLeaderInput'] | null; // ProfileCreateOneWithoutLeaderInput
     name: string; // String!
     org?: NexusGenInputs['OrgCreateOneWithoutOrgInput'] | null; // OrgCreateOneWithoutOrgInput
     slug?: string | null; // String
+    stage: string; // String!
+    startAt?: any | null; // DateTime
+    updatedAt?: any | null; // DateTime
     year?: number | null; // Int
   }
   GroupCreateWithoutOrgInput: { // input type
+    createdAt?: any | null; // DateTime
+    endAt?: any | null; // DateTime
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
     id?: string | null; // ID
     leader?: NexusGenInputs['ProfileCreateOneWithoutLeaderInput'] | null; // ProfileCreateOneWithoutLeaderInput
     members?: NexusGenInputs['ProfileCreateManyWithoutMembersInput'] | null; // ProfileCreateManyWithoutMembersInput
     name: string; // String!
     slug?: string | null; // String
+    stage: string; // String!
+    startAt?: any | null; // DateTime
+    updatedAt?: any | null; // DateTime
     year?: number | null; // Int
+  }
+  GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput: { // input type
+    connect?: NexusGenInputs['GroupEnrollmentWhereUniqueInput'][] | null; // [GroupEnrollmentWhereUniqueInput!]
+    create?: NexusGenInputs['GroupEnrollmentCreateWithoutGroupInput'][] | null; // [GroupEnrollmentCreateWithoutGroupInput!]
+  }
+  GroupEnrollmentCreateWithoutGroupInput: { // input type
+    createdAt?: any | null; // DateTime
+    id?: string | null; // ID
+    profile: NexusGenInputs['ProfileCreateOneWithoutProfileInput']; // ProfileCreateOneWithoutProfileInput!
+    reason: string; // String!
+    updatedAt?: any | null; // DateTime
+  }
+  GroupEnrollmentWhereUniqueInput: { // input type
+    id?: string | null; // ID
   }
   GroupWhereUniqueInput: { // input type
     id?: string | null; // ID
@@ -98,6 +174,7 @@ export interface NexusGenInputs {
     id?: string | null; // ID
   }
   ProfileCreateInput: { // input type
+    attendances?: NexusGenInputs['AttendanceCreateManyWithoutAttendancesInput'] | null; // AttendanceCreateManyWithoutAttendancesInput
     birthday?: any | null; // DateTime
     createdAt?: any | null; // DateTime
     dayOfBirth?: number | null; // Int
@@ -105,10 +182,11 @@ export interface NexusGenInputs {
     facebookId?: string | null; // String
     fullName: string; // String!
     gender?: string | null; // String
-    group?: NexusGenInputs['GroupCreateOneWithoutGroupInput'] | null; // GroupCreateOneWithoutGroupInput
-    groups?: NexusGenInputs['GroupCreateManyWithoutGroupsInput'] | null; // GroupCreateManyWithoutGroupsInput
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
     id?: string | null; // ID
     joinDate?: any | null; // DateTime
+    leader?: NexusGenInputs['GroupCreateManyWithoutLeaderInput'] | null; // GroupCreateManyWithoutLeaderInput
+    member?: NexusGenInputs['GroupCreateManyWithoutMemberInput'] | null; // GroupCreateManyWithoutMemberInput
     monthOfBirth?: number | null; // Int
     oldId?: string | null; // String
     org?: NexusGenInputs['OrgCreateOneWithoutOrgInput'] | null; // OrgCreateOneWithoutOrgInput
@@ -120,13 +198,18 @@ export interface NexusGenInputs {
   }
   ProfileCreateManyWithoutMembersInput: { // input type
     connect?: NexusGenInputs['ProfileWhereUniqueInput'][] | null; // [ProfileWhereUniqueInput!]
-    create?: NexusGenInputs['ProfileCreateWithoutGroupInput'][] | null; // [ProfileCreateWithoutGroupInput!]
+    create?: NexusGenInputs['ProfileCreateWithoutMemberInput'][] | null; // [ProfileCreateWithoutMemberInput!]
   }
   ProfileCreateOneWithoutLeaderInput: { // input type
     connect?: NexusGenInputs['ProfileWhereUniqueInput'] | null; // ProfileWhereUniqueInput
-    create?: NexusGenInputs['ProfileCreateWithoutGroupsInput'] | null; // ProfileCreateWithoutGroupsInput
+    create?: NexusGenInputs['ProfileCreateWithoutLeaderInput'] | null; // ProfileCreateWithoutLeaderInput
   }
-  ProfileCreateWithoutGroupInput: { // input type
+  ProfileCreateOneWithoutProfileInput: { // input type
+    connect?: NexusGenInputs['ProfileWhereUniqueInput'] | null; // ProfileWhereUniqueInput
+    create?: NexusGenInputs['ProfileCreateWithoutUsersInput'] | null; // ProfileCreateWithoutUsersInput
+  }
+  ProfileCreateWithoutLeaderInput: { // input type
+    attendances?: NexusGenInputs['AttendanceCreateManyWithoutAttendancesInput'] | null; // AttendanceCreateManyWithoutAttendancesInput
     birthday?: any | null; // DateTime
     createdAt?: any | null; // DateTime
     dayOfBirth?: number | null; // Int
@@ -134,9 +217,10 @@ export interface NexusGenInputs {
     facebookId?: string | null; // String
     fullName: string; // String!
     gender?: string | null; // String
-    groups?: NexusGenInputs['GroupCreateManyWithoutGroupsInput'] | null; // GroupCreateManyWithoutGroupsInput
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
     id?: string | null; // ID
     joinDate?: any | null; // DateTime
+    member?: NexusGenInputs['GroupCreateManyWithoutMemberInput'] | null; // GroupCreateManyWithoutMemberInput
     monthOfBirth?: number | null; // Int
     oldId?: string | null; // String
     org?: NexusGenInputs['OrgCreateOneWithoutOrgInput'] | null; // OrgCreateOneWithoutOrgInput
@@ -146,7 +230,8 @@ export interface NexusGenInputs {
     users?: NexusGenInputs['UserCreateManyWithoutUsersInput'] | null; // UserCreateManyWithoutUsersInput
     yearOfBirth?: number | null; // Int
   }
-  ProfileCreateWithoutGroupsInput: { // input type
+  ProfileCreateWithoutMemberInput: { // input type
+    attendances?: NexusGenInputs['AttendanceCreateManyWithoutAttendancesInput'] | null; // AttendanceCreateManyWithoutAttendancesInput
     birthday?: any | null; // DateTime
     createdAt?: any | null; // DateTime
     dayOfBirth?: number | null; // Int
@@ -154,9 +239,10 @@ export interface NexusGenInputs {
     facebookId?: string | null; // String
     fullName: string; // String!
     gender?: string | null; // String
-    group?: NexusGenInputs['GroupCreateOneWithoutGroupInput'] | null; // GroupCreateOneWithoutGroupInput
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
     id?: string | null; // ID
     joinDate?: any | null; // DateTime
+    leader?: NexusGenInputs['GroupCreateManyWithoutLeaderInput'] | null; // GroupCreateManyWithoutLeaderInput
     monthOfBirth?: number | null; // Int
     oldId?: string | null; // String
     org?: NexusGenInputs['OrgCreateOneWithoutOrgInput'] | null; // OrgCreateOneWithoutOrgInput
@@ -164,12 +250,55 @@ export interface NexusGenInputs {
     slug?: string | null; // String
     updatedAt?: any | null; // DateTime
     users?: NexusGenInputs['UserCreateManyWithoutUsersInput'] | null; // UserCreateManyWithoutUsersInput
+    yearOfBirth?: number | null; // Int
+  }
+  ProfileCreateWithoutUsersInput: { // input type
+    attendances?: NexusGenInputs['AttendanceCreateManyWithoutAttendancesInput'] | null; // AttendanceCreateManyWithoutAttendancesInput
+    birthday?: any | null; // DateTime
+    createdAt?: any | null; // DateTime
+    dayOfBirth?: number | null; // Int
+    email?: string | null; // String
+    facebookId?: string | null; // String
+    fullName: string; // String!
+    gender?: string | null; // String
+    groupEnrollments?: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'] | null; // GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
+    id?: string | null; // ID
+    joinDate?: any | null; // DateTime
+    leader?: NexusGenInputs['GroupCreateManyWithoutLeaderInput'] | null; // GroupCreateManyWithoutLeaderInput
+    member?: NexusGenInputs['GroupCreateManyWithoutMemberInput'] | null; // GroupCreateManyWithoutMemberInput
+    monthOfBirth?: number | null; // Int
+    oldId?: string | null; // String
+    org?: NexusGenInputs['OrgCreateOneWithoutOrgInput'] | null; // OrgCreateOneWithoutOrgInput
+    phoneNumber?: string | null; // String
+    slug?: string | null; // String
+    updatedAt?: any | null; // DateTime
     yearOfBirth?: number | null; // Int
   }
   ProfileWhereUniqueInput: { // input type
     id?: string | null; // ID
     oldId?: string | null; // String
     slug?: string | null; // String
+  }
+  ScheduleCreateManyWithoutSchedulesInput: { // input type
+    connect?: NexusGenInputs['ScheduleWhereUniqueInput'][] | null; // [ScheduleWhereUniqueInput!]
+    create?: NexusGenInputs['ScheduleCreateWithoutActivityInput'][] | null; // [ScheduleCreateWithoutActivityInput!]
+  }
+  ScheduleCreateOneWithoutScheduleInput: { // input type
+    connect?: NexusGenInputs['ScheduleWhereUniqueInput'] | null; // ScheduleWhereUniqueInput
+    create?: NexusGenInputs['ScheduleCreateWithoutAttendancesInput'] | null; // ScheduleCreateWithoutAttendancesInput
+  }
+  ScheduleCreateWithoutActivityInput: { // input type
+    attendances?: NexusGenInputs['AttendanceCreateManyWithoutAttendancesInput'] | null; // AttendanceCreateManyWithoutAttendancesInput
+    date: any; // DateTime!
+    id?: string | null; // ID
+  }
+  ScheduleCreateWithoutAttendancesInput: { // input type
+    activity: NexusGenInputs['ActivityCreateOneWithoutActivityInput']; // ActivityCreateOneWithoutActivityInput!
+    date: any; // DateTime!
+    id?: string | null; // ID
+  }
+  ScheduleWhereUniqueInput: { // input type
+    id?: string | null; // ID
   }
   UserCreateManyWithoutUsersInput: { // input type
     connect?: NexusGenInputs['UserWhereUniqueInput'][] | null; // [UserWhereUniqueInput!]
@@ -192,6 +321,7 @@ export interface NexusGenEnums {
 }
 
 export interface NexusGenRootTypes {
+  Activity: photon.Activity;
   AuthPayload: { // root type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
@@ -201,6 +331,7 @@ export interface NexusGenRootTypes {
   Post: photon.Post;
   Profile: photon.Profile;
   Query: {};
+  Schedule: photon.Schedule;
   User: photon.User;
   String: string;
   Int: number;
@@ -212,13 +343,23 @@ export interface NexusGenRootTypes {
 
 export interface NexusGenAllTypes extends NexusGenRootTypes {
   ActivityCreateManyWithoutActivitiesInput: NexusGenInputs['ActivityCreateManyWithoutActivitiesInput'];
+  ActivityCreateOneWithoutActivityInput: NexusGenInputs['ActivityCreateOneWithoutActivityInput'];
   ActivityCreateWithoutOrgInput: NexusGenInputs['ActivityCreateWithoutOrgInput'];
+  ActivityCreateWithoutSchedulesInput: NexusGenInputs['ActivityCreateWithoutSchedulesInput'];
   ActivityWhereUniqueInput: NexusGenInputs['ActivityWhereUniqueInput'];
+  AttendanceCreateManyWithoutAttendancesInput: NexusGenInputs['AttendanceCreateManyWithoutAttendancesInput'];
+  AttendanceCreateWithoutMemberInput: NexusGenInputs['AttendanceCreateWithoutMemberInput'];
+  AttendanceWhereUniqueInput: NexusGenInputs['AttendanceWhereUniqueInput'];
   GroupCreateInput: NexusGenInputs['GroupCreateInput'];
   GroupCreateManyWithoutGroupsInput: NexusGenInputs['GroupCreateManyWithoutGroupsInput'];
-  GroupCreateOneWithoutGroupInput: NexusGenInputs['GroupCreateOneWithoutGroupInput'];
+  GroupCreateManyWithoutLeaderInput: NexusGenInputs['GroupCreateManyWithoutLeaderInput'];
+  GroupCreateManyWithoutMemberInput: NexusGenInputs['GroupCreateManyWithoutMemberInput'];
+  GroupCreateWithoutLeaderInput: NexusGenInputs['GroupCreateWithoutLeaderInput'];
   GroupCreateWithoutMembersInput: NexusGenInputs['GroupCreateWithoutMembersInput'];
   GroupCreateWithoutOrgInput: NexusGenInputs['GroupCreateWithoutOrgInput'];
+  GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput: NexusGenInputs['GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput'];
+  GroupEnrollmentCreateWithoutGroupInput: NexusGenInputs['GroupEnrollmentCreateWithoutGroupInput'];
+  GroupEnrollmentWhereUniqueInput: NexusGenInputs['GroupEnrollmentWhereUniqueInput'];
   GroupWhereUniqueInput: NexusGenInputs['GroupWhereUniqueInput'];
   OrgCreateOneWithoutOrgInput: NexusGenInputs['OrgCreateOneWithoutOrgInput'];
   OrgCreateWithoutProfilesInput: NexusGenInputs['OrgCreateWithoutProfilesInput'];
@@ -229,15 +370,26 @@ export interface NexusGenAllTypes extends NexusGenRootTypes {
   ProfileCreateInput: NexusGenInputs['ProfileCreateInput'];
   ProfileCreateManyWithoutMembersInput: NexusGenInputs['ProfileCreateManyWithoutMembersInput'];
   ProfileCreateOneWithoutLeaderInput: NexusGenInputs['ProfileCreateOneWithoutLeaderInput'];
-  ProfileCreateWithoutGroupInput: NexusGenInputs['ProfileCreateWithoutGroupInput'];
-  ProfileCreateWithoutGroupsInput: NexusGenInputs['ProfileCreateWithoutGroupsInput'];
+  ProfileCreateOneWithoutProfileInput: NexusGenInputs['ProfileCreateOneWithoutProfileInput'];
+  ProfileCreateWithoutLeaderInput: NexusGenInputs['ProfileCreateWithoutLeaderInput'];
+  ProfileCreateWithoutMemberInput: NexusGenInputs['ProfileCreateWithoutMemberInput'];
+  ProfileCreateWithoutUsersInput: NexusGenInputs['ProfileCreateWithoutUsersInput'];
   ProfileWhereUniqueInput: NexusGenInputs['ProfileWhereUniqueInput'];
+  ScheduleCreateManyWithoutSchedulesInput: NexusGenInputs['ScheduleCreateManyWithoutSchedulesInput'];
+  ScheduleCreateOneWithoutScheduleInput: NexusGenInputs['ScheduleCreateOneWithoutScheduleInput'];
+  ScheduleCreateWithoutActivityInput: NexusGenInputs['ScheduleCreateWithoutActivityInput'];
+  ScheduleCreateWithoutAttendancesInput: NexusGenInputs['ScheduleCreateWithoutAttendancesInput'];
+  ScheduleWhereUniqueInput: NexusGenInputs['ScheduleWhereUniqueInput'];
   UserCreateManyWithoutUsersInput: NexusGenInputs['UserCreateManyWithoutUsersInput'];
   UserCreateWithoutProfileInput: NexusGenInputs['UserCreateWithoutProfileInput'];
   UserWhereUniqueInput: NexusGenInputs['UserWhereUniqueInput'];
 }
 
 export interface NexusGenFieldTypes {
+  Activity: { // field return type
+    id: string; // ID!
+    name: string; // String!
+  }
   AuthPayload: { // field return type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
@@ -270,10 +422,10 @@ export interface NexusGenFieldTypes {
     facebookId: string | null; // String
     fullName: string; // String!
     gender: string | null; // String
-    group: NexusGenRootTypes['Group'] | null; // Group
     id: string; // ID!
     joinDate: any | null; // DateTime
     oldId: string | null; // String
+    phoneNumber: string | null; // String
   }
   Query: { // field return type
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -282,6 +434,10 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     post: NexusGenRootTypes['Post'] | null; // Post
     profiles: NexusGenRootTypes['Profile'][]; // [Profile!]!
+  }
+  Schedule: { // field return type
+    date: any; // DateTime!
+    id: string; // ID!
   }
   User: { // field return type
     email: string; // String!
@@ -350,9 +506,9 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "AuthPayload" | "Group" | "Mutation" | "Post" | "Profile" | "Query" | "User";
+export type NexusGenObjectNames = "Activity" | "AuthPayload" | "Group" | "Mutation" | "Post" | "Profile" | "Query" | "Schedule" | "User";
 
-export type NexusGenInputNames = "ActivityCreateManyWithoutActivitiesInput" | "ActivityCreateWithoutOrgInput" | "ActivityWhereUniqueInput" | "GroupCreateInput" | "GroupCreateManyWithoutGroupsInput" | "GroupCreateOneWithoutGroupInput" | "GroupCreateWithoutMembersInput" | "GroupCreateWithoutOrgInput" | "GroupWhereUniqueInput" | "OrgCreateOneWithoutOrgInput" | "OrgCreateWithoutProfilesInput" | "OrgWhereUniqueInput" | "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostWhereUniqueInput" | "ProfileCreateInput" | "ProfileCreateManyWithoutMembersInput" | "ProfileCreateOneWithoutLeaderInput" | "ProfileCreateWithoutGroupInput" | "ProfileCreateWithoutGroupsInput" | "ProfileWhereUniqueInput" | "UserCreateManyWithoutUsersInput" | "UserCreateWithoutProfileInput" | "UserWhereUniqueInput";
+export type NexusGenInputNames = "ActivityCreateManyWithoutActivitiesInput" | "ActivityCreateOneWithoutActivityInput" | "ActivityCreateWithoutOrgInput" | "ActivityCreateWithoutSchedulesInput" | "ActivityWhereUniqueInput" | "AttendanceCreateManyWithoutAttendancesInput" | "AttendanceCreateWithoutMemberInput" | "AttendanceWhereUniqueInput" | "GroupCreateInput" | "GroupCreateManyWithoutGroupsInput" | "GroupCreateManyWithoutLeaderInput" | "GroupCreateManyWithoutMemberInput" | "GroupCreateWithoutLeaderInput" | "GroupCreateWithoutMembersInput" | "GroupCreateWithoutOrgInput" | "GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput" | "GroupEnrollmentCreateWithoutGroupInput" | "GroupEnrollmentWhereUniqueInput" | "GroupWhereUniqueInput" | "OrgCreateOneWithoutOrgInput" | "OrgCreateWithoutProfilesInput" | "OrgWhereUniqueInput" | "PostCreateManyWithoutPostsInput" | "PostCreateWithoutAuthorInput" | "PostWhereUniqueInput" | "ProfileCreateInput" | "ProfileCreateManyWithoutMembersInput" | "ProfileCreateOneWithoutLeaderInput" | "ProfileCreateOneWithoutProfileInput" | "ProfileCreateWithoutLeaderInput" | "ProfileCreateWithoutMemberInput" | "ProfileCreateWithoutUsersInput" | "ProfileWhereUniqueInput" | "ScheduleCreateManyWithoutSchedulesInput" | "ScheduleCreateOneWithoutScheduleInput" | "ScheduleCreateWithoutActivityInput" | "ScheduleCreateWithoutAttendancesInput" | "ScheduleWhereUniqueInput" | "UserCreateManyWithoutUsersInput" | "UserCreateWithoutProfileInput" | "UserWhereUniqueInput";
 
 export type NexusGenEnumNames = never;
 

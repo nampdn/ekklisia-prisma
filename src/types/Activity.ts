@@ -1,11 +1,9 @@
 import { objectType } from 'nexus'
 
-export const Group = objectType({
-  name: 'Group',
+export const Activity = objectType({
+  name: 'Activity',
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.leader()
-    t.model.members()
   },
 })
