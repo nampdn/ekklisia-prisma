@@ -566,7 +566,7 @@ export interface NexusGenFieldTypes {
   Query: { // field return type
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
     filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
-    groups: NexusGenRootTypes['Group'][] | null; // [Group!]
+    groups: NexusGenRootTypes['Group'][]; // [Group!]!
     me: NexusGenRootTypes['User'] | null; // User
     post: NexusGenRootTypes['Post'] | null; // Post
     profiles: NexusGenRootTypes['Profile'][]; // [Profile!]!
@@ -640,6 +640,13 @@ export interface NexusGenArgTypes {
   Query: {
     filterPosts: { // args
       searchString?: string | null; // String
+    }
+    groups: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
     }
     post: { // args
       id?: string | null; // ID

@@ -482,7 +482,7 @@ input ProfileWhereUniqueInput {
 type Query {
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
-  groups: [Group!]
+  groups(after: String, before: String, first: Int, last: Int, skip: Int): [Group!]!
   me: User
   post(id: ID): Post
   profiles(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!

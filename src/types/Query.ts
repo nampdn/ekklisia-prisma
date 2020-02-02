@@ -4,13 +4,14 @@ import { getUserId } from '../utils'
 export const Query = queryType({
   definition(t) {
     t.crud.profiles()
+    t.crud.groups()
 
     t.field('me', {
       type: 'User',
       nullable: true,
       resolve: (parent, args, ctx) => {
         const userId = getUserId(ctx)
-        return ctx.photon.users.findOne({
+        return ctx.photon.user.findOne({
           where: {
             id: userId,
           },
@@ -21,7 +22,7 @@ export const Query = queryType({
     t.list.field('feed', {
       type: 'Post',
       resolve: (parent, args, ctx) => {
-        return ctx.photon.posts.findMany({
+        return ctx.photon.post.findMany({
           where: { published: true },
         })
       },
@@ -33,7 +34,7 @@ export const Query = queryType({
         searchString: stringArg({ nullable: true }),
       },
       resolve: (parent, { searchString }, ctx) => {
-        return ctx.photon.posts.findMany({
+        return ctx.photon.post.findMany({
           where: {
             OR: [
               {
@@ -57,7 +58,7 @@ export const Query = queryType({
       nullable: true,
       args: { id: idArg() },
       resolve: (parent, { id }, ctx) => {
-        return ctx.photon.posts.findOne({
+        return ctx.photon.post.findOne({
           where: {
             id,
           },
@@ -65,13 +66,13 @@ export const Query = queryType({
       },
     })
 
-    t.field('groups', {
-      type: 'Group',
-      nullable: true,
-      list: true,
-      resolve: (parent, _, ctx) => {
-        return ctx.photon.groups(_)
-      },
-    })
+    // t.field('groups', {
+    //   type: 'Group',
+    //   nullable: true,
+    //   list: true,
+    //   resolve: (parent, _, ctx) => {
+    //     // return ctx.photon.group(_)
+    //   },
+    // })
   },
 })
