@@ -3,54 +3,70 @@
 
 
 type Activity {
-  id: ID!
+  id: String!
   name: String!
+  slug: String!
 }
 
-input ActivityCreateManyWithoutActivitiesInput {
+input ActivityCreateManyWithoutOrgInput {
   connect: [ActivityWhereUniqueInput!]
   create: [ActivityCreateWithoutOrgInput!]
 }
 
-input ActivityCreateOneWithoutActivityInput {
+input ActivityCreateOneWithoutSchedulesInput {
   connect: ActivityWhereUniqueInput
   create: ActivityCreateWithoutSchedulesInput
 }
 
 input ActivityCreateWithoutOrgInput {
-  id: ID
+  id: String
   name: String!
-  schedules: ScheduleCreateManyWithoutSchedulesInput
-  type: String!
+  schedules: ScheduleCreateManyWithoutActivityInput
+  slug: String!
 }
 
 input ActivityCreateWithoutSchedulesInput {
-  id: ID
+  id: String
   name: String!
-  org: OrgCreateOneWithoutOrgInput!
-  type: String!
+  org: OrgCreateOneWithoutActivitiesInput!
+  slug: String!
 }
 
 input ActivityWhereUniqueInput {
-  id: ID
+  id: String
+  slug: String
 }
 
-input AttendanceCreateManyWithoutAttendancesInput {
+input AttendanceCreateManyWithoutMemberInput {
   connect: [AttendanceWhereUniqueInput!]
   create: [AttendanceCreateWithoutMemberInput!]
 }
 
+input AttendanceCreateManyWithoutScheduleInput {
+  connect: [AttendanceWhereUniqueInput!]
+  create: [AttendanceCreateWithoutScheduleInput!]
+}
+
 input AttendanceCreateWithoutMemberInput {
   createdAt: DateTime
-  id: ID
+  id: String
   present: Boolean!
-  schedule: ScheduleCreateOneWithoutScheduleInput!
+  schedule: ScheduleCreateOneWithoutAttendancesInput!
+  status: String!
+  updatedAt: DateTime
+}
+
+input AttendanceCreateWithoutScheduleInput {
+  createdAt: DateTime
+  id: String
+  member: ProfileCreateOneWithoutAttendancesInput!
+  present: Boolean!
   status: String!
   updatedAt: DateTime
 }
 
 input AttendanceWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 type AuthPayload {
@@ -61,21 +77,21 @@ type AuthPayload {
 scalar DateTime
 
 type Group {
-  id: ID!
+  id: String!
   leader: Profile
-  members(after: ID, before: ID, first: Int, last: Int, skip: Int): [Profile!]!
+  members(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
   name: String!
 }
 
 input GroupCreateInput {
   createdAt: DateTime
   endAt: DateTime
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
+  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
+  id: String
   leader: ProfileCreateOneWithoutLeaderInput
-  members: ProfileCreateManyWithoutMembersInput
+  members: ProfileCreateManyWithoutMemberInput
   name: String!
-  org: OrgCreateOneWithoutOrgInput
+  org: OrgCreateOneWithoutGroupsInput
   slug: String
   stage: String!
   startAt: DateTime
@@ -83,29 +99,49 @@ input GroupCreateInput {
   year: Int
 }
 
-input GroupCreateManyWithoutGroupsInput {
-  connect: [GroupWhereUniqueInput!]
-  create: [GroupCreateWithoutOrgInput!]
-}
-
 input GroupCreateManyWithoutLeaderInput {
   connect: [GroupWhereUniqueInput!]
   create: [GroupCreateWithoutLeaderInput!]
 }
 
-input GroupCreateManyWithoutMemberInput {
+input GroupCreateManyWithoutMembersInput {
   connect: [GroupWhereUniqueInput!]
   create: [GroupCreateWithoutMembersInput!]
+}
+
+input GroupCreateManyWithoutOrgInput {
+  connect: [GroupWhereUniqueInput!]
+  create: [GroupCreateWithoutOrgInput!]
+}
+
+input GroupCreateOneWithoutGroupEnrollmentsInput {
+  connect: GroupWhereUniqueInput
+  create: GroupCreateWithoutGroupEnrollmentsInput
+}
+
+input GroupCreateWithoutGroupEnrollmentsInput {
+  createdAt: DateTime
+  endAt: DateTime
+  id: String
+  leader: ProfileCreateOneWithoutLeaderInput
+  members: ProfileCreateManyWithoutMemberInput
+  name: String!
+  org: OrgCreateOneWithoutGroupsInput
+  slug: String
+  stage: String!
+  startAt: DateTime
+  updatedAt: DateTime
+  year: Int
 }
 
 input GroupCreateWithoutLeaderInput {
   createdAt: DateTime
   endAt: DateTime
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
-  members: ProfileCreateManyWithoutMembersInput
+  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
+  id: String
+  members: ProfileCreateManyWithoutMemberInput
   name: String!
-  org: OrgCreateOneWithoutOrgInput
+  org: OrgCreateOneWithoutGroupsInput
   slug: String
   stage: String!
   startAt: DateTime
@@ -116,11 +152,11 @@ input GroupCreateWithoutLeaderInput {
 input GroupCreateWithoutMembersInput {
   createdAt: DateTime
   endAt: DateTime
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
+  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
+  id: String
   leader: ProfileCreateOneWithoutLeaderInput
   name: String!
-  org: OrgCreateOneWithoutOrgInput
+  org: OrgCreateOneWithoutGroupsInput
   slug: String
   stage: String!
   startAt: DateTime
@@ -131,10 +167,10 @@ input GroupCreateWithoutMembersInput {
 input GroupCreateWithoutOrgInput {
   createdAt: DateTime
   endAt: DateTime
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
+  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
+  id: String
   leader: ProfileCreateOneWithoutLeaderInput
-  members: ProfileCreateManyWithoutMembersInput
+  members: ProfileCreateManyWithoutMemberInput
   name: String!
   slug: String
   stage: String!
@@ -143,25 +179,38 @@ input GroupCreateWithoutOrgInput {
   year: Int
 }
 
-input GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput {
+input GroupEnrollmentCreateManyWithoutGroupInput {
   connect: [GroupEnrollmentWhereUniqueInput!]
   create: [GroupEnrollmentCreateWithoutGroupInput!]
 }
 
+input GroupEnrollmentCreateManyWithoutProfileInput {
+  connect: [GroupEnrollmentWhereUniqueInput!]
+  create: [GroupEnrollmentCreateWithoutProfileInput!]
+}
+
 input GroupEnrollmentCreateWithoutGroupInput {
   createdAt: DateTime
-  id: ID
-  profile: ProfileCreateOneWithoutProfileInput!
+  id: String
+  profile: ProfileCreateOneWithoutGroupEnrollmentsInput!
+  reason: String!
+  updatedAt: DateTime
+}
+
+input GroupEnrollmentCreateWithoutProfileInput {
+  createdAt: DateTime
+  group: GroupCreateOneWithoutGroupEnrollmentsInput!
+  id: String
   reason: String!
   updatedAt: DateTime
 }
 
 input GroupEnrollmentWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 input GroupWhereUniqueInput {
-  id: ID
+  id: String
   slug: String
 }
 
@@ -175,31 +224,62 @@ type Mutation {
   signup(email: String!, name: String, password: String!): AuthPayload!
 }
 
-input OrgCreateOneWithoutOrgInput {
+type Org {
+  activities(after: String, before: String, first: Int, last: Int, skip: Int): [Activity!]!
+  groups(after: String, before: String, first: Int, last: Int, skip: Int): [Group!]!
+  id: String!
+  name: String!
+}
+
+input OrgCreateOneWithoutActivitiesInput {
+  connect: OrgWhereUniqueInput
+  create: OrgCreateWithoutActivitiesInput
+}
+
+input OrgCreateOneWithoutGroupsInput {
+  connect: OrgWhereUniqueInput
+  create: OrgCreateWithoutGroupsInput
+}
+
+input OrgCreateOneWithoutProfilesInput {
   connect: OrgWhereUniqueInput
   create: OrgCreateWithoutProfilesInput
 }
 
+input OrgCreateWithoutActivitiesInput {
+  groups: GroupCreateManyWithoutOrgInput
+  id: String
+  name: String!
+  profiles: ProfileCreateManyWithoutOrgInput
+}
+
+input OrgCreateWithoutGroupsInput {
+  activities: ActivityCreateManyWithoutOrgInput
+  id: String
+  name: String!
+  profiles: ProfileCreateManyWithoutOrgInput
+}
+
 input OrgCreateWithoutProfilesInput {
-  activities: ActivityCreateManyWithoutActivitiesInput
-  groups: GroupCreateManyWithoutGroupsInput
-  id: ID
+  activities: ActivityCreateManyWithoutOrgInput
+  groups: GroupCreateManyWithoutOrgInput
+  id: String
   name: String!
 }
 
 input OrgWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 type Post {
   author: User
   content: String
-  id: ID!
+  id: String!
   published: Boolean!
   title: String!
 }
 
-input PostCreateManyWithoutPostsInput {
+input PostCreateManyWithoutAuthorInput {
   connect: [PostWhereUniqueInput!]
   create: [PostCreateWithoutAuthorInput!]
 }
@@ -207,14 +287,14 @@ input PostCreateManyWithoutPostsInput {
 input PostCreateWithoutAuthorInput {
   content: String
   createdAt: DateTime
-  id: ID
+  id: String
   published: Boolean
   title: String!
   updatedAt: DateTime
 }
 
 input PostWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 type Profile {
@@ -223,14 +303,14 @@ type Profile {
   facebookId: String
   fullName: String!
   gender: String
-  id: ID!
+  id: String!
   joinDate: DateTime
   oldId: String
   phoneNumber: String
 }
 
 input ProfileCreateInput {
-  attendances: AttendanceCreateManyWithoutAttendancesInput
+  attendances: AttendanceCreateManyWithoutMemberInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -238,24 +318,39 @@ input ProfileCreateInput {
   facebookId: String
   fullName: String!
   gender: String
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
+  groupEnrollments: GroupEnrollmentCreateManyWithoutProfileInput
+  id: String
   joinDate: DateTime
   leader: GroupCreateManyWithoutLeaderInput
-  member: GroupCreateManyWithoutMemberInput
+  member: GroupCreateManyWithoutMembersInput
   monthOfBirth: Int
   oldId: String
-  org: OrgCreateOneWithoutOrgInput
+  org: OrgCreateOneWithoutProfilesInput
   phoneNumber: String
   slug: String
   updatedAt: DateTime
-  users: UserCreateManyWithoutUsersInput
+  users: UserCreateManyWithoutProfileInput
   yearOfBirth: Int
 }
 
-input ProfileCreateManyWithoutMembersInput {
+input ProfileCreateManyWithoutMemberInput {
   connect: [ProfileWhereUniqueInput!]
   create: [ProfileCreateWithoutMemberInput!]
+}
+
+input ProfileCreateManyWithoutOrgInput {
+  connect: [ProfileWhereUniqueInput!]
+  create: [ProfileCreateWithoutOrgInput!]
+}
+
+input ProfileCreateOneWithoutAttendancesInput {
+  connect: ProfileWhereUniqueInput
+  create: ProfileCreateWithoutAttendancesInput
+}
+
+input ProfileCreateOneWithoutGroupEnrollmentsInput {
+  connect: ProfileWhereUniqueInput
+  create: ProfileCreateWithoutGroupEnrollmentsInput
 }
 
 input ProfileCreateOneWithoutLeaderInput {
@@ -263,13 +358,7 @@ input ProfileCreateOneWithoutLeaderInput {
   create: ProfileCreateWithoutLeaderInput
 }
 
-input ProfileCreateOneWithoutProfileInput {
-  connect: ProfileWhereUniqueInput
-  create: ProfileCreateWithoutUsersInput
-}
-
-input ProfileCreateWithoutLeaderInput {
-  attendances: AttendanceCreateManyWithoutAttendancesInput
+input ProfileCreateWithoutAttendancesInput {
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -277,22 +366,69 @@ input ProfileCreateWithoutLeaderInput {
   facebookId: String
   fullName: String!
   gender: String
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
+  groupEnrollments: GroupEnrollmentCreateManyWithoutProfileInput
+  id: String
   joinDate: DateTime
-  member: GroupCreateManyWithoutMemberInput
+  leader: GroupCreateManyWithoutLeaderInput
+  member: GroupCreateManyWithoutMembersInput
   monthOfBirth: Int
   oldId: String
-  org: OrgCreateOneWithoutOrgInput
+  org: OrgCreateOneWithoutProfilesInput
   phoneNumber: String
   slug: String
   updatedAt: DateTime
-  users: UserCreateManyWithoutUsersInput
+  users: UserCreateManyWithoutProfileInput
+  yearOfBirth: Int
+}
+
+input ProfileCreateWithoutGroupEnrollmentsInput {
+  attendances: AttendanceCreateManyWithoutMemberInput
+  birthday: DateTime
+  createdAt: DateTime
+  dayOfBirth: Int
+  email: String
+  facebookId: String
+  fullName: String!
+  gender: String
+  id: String
+  joinDate: DateTime
+  leader: GroupCreateManyWithoutLeaderInput
+  member: GroupCreateManyWithoutMembersInput
+  monthOfBirth: Int
+  oldId: String
+  org: OrgCreateOneWithoutProfilesInput
+  phoneNumber: String
+  slug: String
+  updatedAt: DateTime
+  users: UserCreateManyWithoutProfileInput
+  yearOfBirth: Int
+}
+
+input ProfileCreateWithoutLeaderInput {
+  attendances: AttendanceCreateManyWithoutMemberInput
+  birthday: DateTime
+  createdAt: DateTime
+  dayOfBirth: Int
+  email: String
+  facebookId: String
+  fullName: String!
+  gender: String
+  groupEnrollments: GroupEnrollmentCreateManyWithoutProfileInput
+  id: String
+  joinDate: DateTime
+  member: GroupCreateManyWithoutMembersInput
+  monthOfBirth: Int
+  oldId: String
+  org: OrgCreateOneWithoutProfilesInput
+  phoneNumber: String
+  slug: String
+  updatedAt: DateTime
+  users: UserCreateManyWithoutProfileInput
   yearOfBirth: Int
 }
 
 input ProfileCreateWithoutMemberInput {
-  attendances: AttendanceCreateManyWithoutAttendancesInput
+  attendances: AttendanceCreateManyWithoutMemberInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -300,22 +436,22 @@ input ProfileCreateWithoutMemberInput {
   facebookId: String
   fullName: String!
   gender: String
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
+  groupEnrollments: GroupEnrollmentCreateManyWithoutProfileInput
+  id: String
   joinDate: DateTime
   leader: GroupCreateManyWithoutLeaderInput
   monthOfBirth: Int
   oldId: String
-  org: OrgCreateOneWithoutOrgInput
+  org: OrgCreateOneWithoutProfilesInput
   phoneNumber: String
   slug: String
   updatedAt: DateTime
-  users: UserCreateManyWithoutUsersInput
+  users: UserCreateManyWithoutProfileInput
   yearOfBirth: Int
 }
 
-input ProfileCreateWithoutUsersInput {
-  attendances: AttendanceCreateManyWithoutAttendancesInput
+input ProfileCreateWithoutOrgInput {
+  attendances: AttendanceCreateManyWithoutMemberInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -323,22 +459,22 @@ input ProfileCreateWithoutUsersInput {
   facebookId: String
   fullName: String!
   gender: String
-  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupEnrollmentsInput
-  id: ID
+  groupEnrollments: GroupEnrollmentCreateManyWithoutProfileInput
+  id: String
   joinDate: DateTime
   leader: GroupCreateManyWithoutLeaderInput
-  member: GroupCreateManyWithoutMemberInput
+  member: GroupCreateManyWithoutMembersInput
   monthOfBirth: Int
   oldId: String
-  org: OrgCreateOneWithoutOrgInput
   phoneNumber: String
   slug: String
   updatedAt: DateTime
+  users: UserCreateManyWithoutProfileInput
   yearOfBirth: Int
 }
 
 input ProfileWhereUniqueInput {
-  id: ID
+  id: String
   oldId: String
   slug: String
 }
@@ -349,61 +485,62 @@ type Query {
   groups: [Group!]
   me: User
   post(id: ID): Post
-  profiles(after: ID, before: ID, first: Int, last: Int, skip: Int): [Profile!]!
+  profiles(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
 }
 
 type Schedule {
+  activity: Activity!
   date: DateTime!
-  id: ID!
+  id: String!
 }
 
-input ScheduleCreateManyWithoutSchedulesInput {
+input ScheduleCreateManyWithoutActivityInput {
   connect: [ScheduleWhereUniqueInput!]
   create: [ScheduleCreateWithoutActivityInput!]
 }
 
-input ScheduleCreateOneWithoutScheduleInput {
+input ScheduleCreateOneWithoutAttendancesInput {
   connect: ScheduleWhereUniqueInput
   create: ScheduleCreateWithoutAttendancesInput
 }
 
 input ScheduleCreateWithoutActivityInput {
-  attendances: AttendanceCreateManyWithoutAttendancesInput
+  attendances: AttendanceCreateManyWithoutScheduleInput
   date: DateTime!
-  id: ID
+  id: String
 }
 
 input ScheduleCreateWithoutAttendancesInput {
-  activity: ActivityCreateOneWithoutActivityInput!
+  activity: ActivityCreateOneWithoutSchedulesInput!
   date: DateTime!
-  id: ID
+  id: String
 }
 
 input ScheduleWhereUniqueInput {
-  id: ID
+  id: String
 }
 
 type User {
   email: String!
-  id: ID!
+  id: String!
   name: String
   posts: [Post!]!
 }
 
-input UserCreateManyWithoutUsersInput {
+input UserCreateManyWithoutProfileInput {
   connect: [UserWhereUniqueInput!]
   create: [UserCreateWithoutProfileInput!]
 }
 
 input UserCreateWithoutProfileInput {
   email: String!
-  id: ID
+  id: String
   name: String
   password: String!
-  posts: PostCreateManyWithoutPostsInput
+  posts: PostCreateManyWithoutAuthorInput
 }
 
 input UserWhereUniqueInput {
   email: String
-  id: ID
+  id: String
 }

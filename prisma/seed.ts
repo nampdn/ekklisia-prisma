@@ -1,5 +1,5 @@
-import { Photon } from '@prisma/photon'
-const photon = new Photon()
+import { PrismaClient } from '@prisma/client'
+const photon = new PrismaClient()
 
 async function main() {
   const user1 = await photon.users.create({

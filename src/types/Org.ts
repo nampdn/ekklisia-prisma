@@ -1,10 +1,11 @@
 import { objectType } from 'nexus'
 
-export const Activity = objectType({
-  name: 'Activity',
+export const Org = objectType({
+  name: 'Org',
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.slug()
+    t.model.activities()
+    t.model.groups()
   },
 })

@@ -1,6 +1,7 @@
 export * from './Activity'
 export * from './AuthPayload'
 export * from './Mutation'
+export * from './Org'
 export * from './Post'
 export * from './Query'
 export * from './User'
