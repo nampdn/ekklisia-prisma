@@ -4,16 +4,16 @@ import * as dotenv from 'dotenv'
 
 dotenv.config() // load the environment variables
 
-const photon = new PrismaClient()
+const prisma = new PrismaClient()
 
 export interface Context {
-  photon: PrismaClient
+  prisma: PrismaClient
   request: any
 }
 
 export function createContext(request: ContextParameters) {
   return {
     ...request,
-    photon,
+    prisma,
   }
 }

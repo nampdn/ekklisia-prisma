@@ -1,4 +1,4 @@
-import { rule, shield } from 'graphql-shield'
+import { rule, shield, not } from 'graphql-shield'
 import { getUserId } from '../utils'
 
 const rules = {
@@ -17,6 +17,10 @@ const rules = {
       .author()
     return userId === author.id
   }),
+  allow: rule()(async (parent, { id }, context) => {
+    console.log(id, context)
+    return true
+  }),
 }
 
 export const permissions = shield({
@@ -24,10 +28,14 @@ export const permissions = shield({
     me: rules.isAuthenticatedUser,
     filterPosts: rules.isAuthenticatedUser,
     post: rules.isAuthenticatedUser,
+    groups: not(rules.isAuthenticatedUser),
+    profiles: not(rules.isAuthenticatedUser),
   },
   Mutation: {
     createDraft: rules.isAuthenticatedUser,
     deletePost: rules.isPostOwner,
     publish: rules.isPostOwner,
+    login: not(rules.isAuthenticatedUser),
+    signup: not(rules.isAuthenticatedUser),
   },
 })

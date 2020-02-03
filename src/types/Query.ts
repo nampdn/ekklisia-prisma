@@ -11,7 +11,7 @@ export const Query = queryType({
       nullable: true,
       resolve: (parent, args, ctx) => {
         const userId = getUserId(ctx)
-        return ctx.photon.user.findOne({
+        return ctx.prisma.user.findOne({
           where: {
             id: userId,
           },
@@ -22,7 +22,7 @@ export const Query = queryType({
     t.list.field('feed', {
       type: 'Post',
       resolve: (parent, args, ctx) => {
-        return ctx.photon.post.findMany({
+        return ctx.prisma.post.findMany({
           where: { published: true },
         })
       },
@@ -34,7 +34,7 @@ export const Query = queryType({
         searchString: stringArg({ nullable: true }),
       },
       resolve: (parent, { searchString }, ctx) => {
-        return ctx.photon.post.findMany({
+        return ctx.prisma.post.findMany({
           where: {
             OR: [
               {
@@ -58,7 +58,7 @@ export const Query = queryType({
       nullable: true,
       args: { id: idArg() },
       resolve: (parent, { id }, ctx) => {
-        return ctx.photon.post.findOne({
+        return ctx.prisma.post.findOne({
           where: {
             id,
           },
@@ -71,7 +71,7 @@ export const Query = queryType({
     //   nullable: true,
     //   list: true,
     //   resolve: (parent, _, ctx) => {
-    //     // return ctx.photon.group(_)
+    //     // return ctx.prisma.group(_)
     //   },
     // })
   },
