@@ -375,10 +375,10 @@ const seedSchedule = async () => {
 
 const main = async () => {
   console.log(process.env.DATABASE_URL)
-  // await seedActivity()
+  await seedActivity()
   // await seedSchedule()
   // await seedProfile()
-  await seedGroup()
+  // await seedGroup()
 }
 
 main()

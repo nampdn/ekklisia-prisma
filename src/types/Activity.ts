@@ -6,5 +6,6 @@ export const Activity = objectType({
     t.model.id()
     t.model.name()
     t.model.slug()
+    t.model.schedules()
   },
 })

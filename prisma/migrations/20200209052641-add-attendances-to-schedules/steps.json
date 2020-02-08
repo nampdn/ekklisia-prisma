@@ -1,0 +1,42 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "DeleteField",
+      "model": "Activity",
+      "field": "type"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Schedule",
+      "field": "attendances",
+      "type": "Attendance",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Schedule",
+          "field": "attendances"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Schedule",
+          "field": "attendances"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceSchedule\""
+    }
+  ]
+}

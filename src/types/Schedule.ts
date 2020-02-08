@@ -6,5 +6,6 @@ export const Schedule = objectType({
     t.model.id()
     t.model.date()
     t.model.activity()
+    t.model.attendances()
   },
 })

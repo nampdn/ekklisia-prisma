@@ -5,6 +5,7 @@
 type Activity {
   id: String!
   name: String!
+  schedules(after: String, before: String, first: Int, last: Int, skip: Int): [Schedule!]!
   slug: String!
 }
 
@@ -35,6 +36,15 @@ input ActivityCreateWithoutSchedulesInput {
 input ActivityWhereUniqueInput {
   id: String
   slug: String
+}
+
+type Attendance {
+  createdAt: DateTime!
+  id: String!
+  member: Profile!
+  present: Boolean!
+  schedule: Schedule!
+  status: String!
 }
 
 input AttendanceCreateManyWithoutMemberInput {
@@ -480,6 +490,8 @@ input ProfileWhereUniqueInput {
 }
 
 type Query {
+  activities(after: String, before: String, first: Int, last: Int, skip: Int): [Activity!]!
+  attendances(after: String, before: String, first: Int, last: Int, skip: Int): [Attendance!]!
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!
   groups(after: String, before: String, first: Int, last: Int, skip: Int): [Group!]!
@@ -490,6 +502,7 @@ type Query {
 
 type Schedule {
   activity: Activity!
+  attendances(after: String, before: String, first: Int, last: Int, skip: Int): [Attendance!]!
   date: DateTime!
   id: String!
 }

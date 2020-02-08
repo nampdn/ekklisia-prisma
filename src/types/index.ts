@@ -1,3 +1,4 @@
+// You must export a type to be generated the schema
 export * from './Activity'
 export * from './AuthPayload'
 export * from './Mutation'
@@ -8,3 +9,4 @@ export * from './User'
 export * from './Group'
 export * from './Profile'
 export * from './Schedule'
+export * from './Attendance'

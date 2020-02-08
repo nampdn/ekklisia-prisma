@@ -5,6 +5,8 @@ export const Query = queryType({
   definition(t) {
     t.crud.profiles()
     t.crud.groups()
+    t.crud.activities()
+    t.crud.attendances()
 
     t.field('me', {
       type: 'User',
@@ -65,14 +67,5 @@ export const Query = queryType({
         })
       },
     })
-
-    // t.field('groups', {
-    //   type: 'Group',
-    //   nullable: true,
-    //   list: true,
-    //   resolve: (parent, _, ctx) => {
-    //     // return ctx.prisma.group(_)
-    //   },
-    // })
   },
 })

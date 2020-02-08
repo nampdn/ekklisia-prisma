@@ -436,6 +436,7 @@ export interface NexusGenEnums {
 
 export interface NexusGenRootTypes {
   Activity: client.Activity;
+  Attendance: client.Attendance;
   AuthPayload: { // root type
     token: string; // String!
     user: NexusGenRootTypes['User']; // User!
@@ -518,7 +519,16 @@ export interface NexusGenFieldTypes {
   Activity: { // field return type
     id: string; // String!
     name: string; // String!
+    schedules: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
     slug: string; // String!
+  }
+  Attendance: { // field return type
+    createdAt: any; // DateTime!
+    id: string; // String!
+    member: NexusGenRootTypes['Profile']; // Profile!
+    present: boolean; // Boolean!
+    schedule: NexusGenRootTypes['Schedule']; // Schedule!
+    status: string; // String!
   }
   AuthPayload: { // field return type
     token: string; // String!
@@ -564,6 +574,8 @@ export interface NexusGenFieldTypes {
     phoneNumber: string | null; // String
   }
   Query: { // field return type
+    activities: NexusGenRootTypes['Activity'][]; // [Activity!]!
+    attendances: NexusGenRootTypes['Attendance'][]; // [Attendance!]!
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
     filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     groups: NexusGenRootTypes['Group'][]; // [Group!]!
@@ -573,6 +585,7 @@ export interface NexusGenFieldTypes {
   }
   Schedule: { // field return type
     activity: NexusGenRootTypes['Activity']; // Activity!
+    attendances: NexusGenRootTypes['Attendance'][]; // [Attendance!]!
     date: any; // DateTime!
     id: string; // String!
   }
@@ -585,6 +598,15 @@ export interface NexusGenFieldTypes {
 }
 
 export interface NexusGenArgTypes {
+  Activity: {
+    schedules: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+  }
   Group: {
     members: { // args
       after?: string | null; // String
@@ -638,6 +660,20 @@ export interface NexusGenArgTypes {
     }
   }
   Query: {
+    activities: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+    attendances: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
     filterPosts: { // args
       searchString?: string | null; // String
     }
@@ -659,6 +695,15 @@ export interface NexusGenArgTypes {
       skip?: number | null; // Int
     }
   }
+  Schedule: {
+    attendances: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+  }
 }
 
 export interface NexusGenAbstractResolveReturnTypes {
@@ -666,7 +711,7 @@ export interface NexusGenAbstractResolveReturnTypes {
 
 export interface NexusGenInheritedFields {}
 
-export type NexusGenObjectNames = "Activity" | "AuthPayload" | "Group" | "Mutation" | "Org" | "Post" | "Profile" | "Query" | "Schedule" | "User";
+export type NexusGenObjectNames = "Activity" | "Attendance" | "AuthPayload" | "Group" | "Mutation" | "Org" | "Post" | "Profile" | "Query" | "Schedule" | "User";
 
 export type NexusGenInputNames = "ActivityCreateManyWithoutOrgInput" | "ActivityCreateOneWithoutSchedulesInput" | "ActivityCreateWithoutOrgInput" | "ActivityCreateWithoutSchedulesInput" | "ActivityWhereUniqueInput" | "AttendanceCreateManyWithoutMemberInput" | "AttendanceCreateManyWithoutScheduleInput" | "AttendanceCreateWithoutMemberInput" | "AttendanceCreateWithoutScheduleInput" | "AttendanceWhereUniqueInput" | "GroupCreateInput" | "GroupCreateManyWithoutLeaderInput" | "GroupCreateManyWithoutMembersInput" | "GroupCreateManyWithoutOrgInput" | "GroupCreateOneWithoutGroupEnrollmentsInput" | "GroupCreateWithoutGroupEnrollmentsInput" | "GroupCreateWithoutLeaderInput" | "GroupCreateWithoutMembersInput" | "GroupCreateWithoutOrgInput" | "GroupEnrollmentCreateManyWithoutGroupInput" | "GroupEnrollmentCreateManyWithoutProfileInput" | "GroupEnrollmentCreateWithoutGroupInput" | "GroupEnrollmentCreateWithoutProfileInput" | "GroupEnrollmentWhereUniqueInput" | "GroupWhereUniqueInput" | "OrgCreateOneWithoutActivitiesInput" | "OrgCreateOneWithoutGroupsInput" | "OrgCreateOneWithoutProfilesInput" | "OrgCreateWithoutActivitiesInput" | "OrgCreateWithoutGroupsInput" | "OrgCreateWithoutProfilesInput" | "OrgWhereUniqueInput" | "PostCreateManyWithoutAuthorInput" | "PostCreateWithoutAuthorInput" | "PostWhereUniqueInput" | "ProfileCreateInput" | "ProfileCreateManyWithoutMemberInput" | "ProfileCreateManyWithoutOrgInput" | "ProfileCreateOneWithoutAttendancesInput" | "ProfileCreateOneWithoutGroupEnrollmentsInput" | "ProfileCreateOneWithoutLeaderInput" | "ProfileCreateWithoutAttendancesInput" | "ProfileCreateWithoutGroupEnrollmentsInput" | "ProfileCreateWithoutLeaderInput" | "ProfileCreateWithoutMemberInput" | "ProfileCreateWithoutOrgInput" | "ProfileWhereUniqueInput" | "ScheduleCreateManyWithoutActivityInput" | "ScheduleCreateOneWithoutAttendancesInput" | "ScheduleCreateWithoutActivityInput" | "ScheduleCreateWithoutAttendancesInput" | "ScheduleWhereUniqueInput" | "UserCreateManyWithoutProfileInput" | "UserCreateWithoutProfileInput" | "UserWhereUniqueInput";
 
