@@ -22,6 +22,31 @@ export const Query = queryType({
       },
     })
 
+    t.list.field('membersInGroup', {
+      type: 'Profile',
+      nullable: false,
+      resolve: async (parent, args, ctx) => {
+        const userId = getUserId(ctx)
+
+        const authUser = await ctx.prisma.user
+          .findOne({
+            where: { id: userId },
+          })
+          .profile()
+
+        const groups = await ctx.prisma.group.findMany({
+          where: { leader: { id: authUser?.id } },
+        })
+        if (groups[0]) {
+          const profiles = await ctx.prisma.group
+            .findOne({ where: { id: groups[0].id } })
+            .members()
+          return profiles
+        }
+        return []
+      },
+    })
+
     // t.list.field('scheduleToday', {
     //   {type: 'Schedule',
     // nullable: false}

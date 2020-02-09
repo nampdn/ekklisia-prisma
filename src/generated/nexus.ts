@@ -584,6 +584,7 @@ export interface NexusGenFieldTypes {
     filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
     groups: NexusGenRootTypes['Group'][]; // [Group!]!
     me: NexusGenRootTypes['User'] | null; // User
+    membersInGroup: NexusGenRootTypes['Profile'][]; // [Profile!]!
     post: NexusGenRootTypes['Post'] | null; // Post
     profiles: NexusGenRootTypes['Profile'][]; // [Profile!]!
     schedules: NexusGenRootTypes['Schedule'][]; // [Schedule!]!

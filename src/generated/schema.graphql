@@ -499,6 +499,7 @@ type Query {
   filterPosts(searchString: String): [Post!]!
   groups(after: String, before: String, first: Int, last: Int, skip: Int): [Group!]!
   me: User
+  membersInGroup: [Profile!]!
   post(id: ID): Post
   profiles(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
   schedules(after: String, before: String, first: Int, last: Int, skip: Int): [Schedule!]!
