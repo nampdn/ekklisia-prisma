@@ -5,6 +5,7 @@ import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { changePhonePrefix } from 'vikit'
 import pLimit from 'p-limit'
 import pRetry from 'p-retry'
+import { hash } from 'bcryptjs'
 
 const limit = pLimit(20)
 const limitRetry = (f: () => Promise<any>) =>
@@ -62,6 +63,44 @@ AT.configure({
 })
 
 export const base = AT.base(BASE_ID)
+
+export const getUsers = async (): Promise<any[]> => {
+  return new Promise((resolve, reject) => {
+    const userList: any[] = []
+    base('User')
+      .select({
+        maxRecords: 1000,
+        pageSize: 100,
+        view: 'Grid view',
+      })
+      .eachPage(
+        function page(records: any, fetchNextPage: () => void) {
+          records.forEach((record: any) => {
+            const user = {
+              id: record.id,
+              profile: record.get('profile') || '',
+              email: record.get('email') || '',
+              password: record.get('password') || '',
+            }
+            user.profile = user.profile[0]
+            user.password = (user.password[0] as string)
+              .substr(0, 10)
+              .replace(/-/g, '')
+            userList.push(user)
+          })
+          fetchNextPage()
+        },
+        function done(err: any) {
+          if (err) {
+            console.error(err)
+            reject(err)
+          } else {
+            resolve(userList)
+          }
+        },
+      )
+  })
+}
 
 export const getAllProfiles = async (): Promise<any[]> => {
   return new Promise((resolve, reject) => {
@@ -269,70 +308,78 @@ const seedProfile = async () => {
 const seedGroup = async () => {
   console.log('SEED: Group')
   const groups = await getGroups()
-  const all = groups.map(async group => {
-    const { id, name, year, leader: listLeader, members } = group
-    const leader = listLeader[0]
-    const groupData = {
-      id,
-      name,
-      year,
-    }
-    try {
-      console.log(`Creating Group: ${JSON.stringify(groupData, null, 2)}`)
-      const newGroup = await photon.group.upsert({
-        where: { id },
-        update: {
-          id,
-          name,
-          year,
-        },
-        create: {
-          id,
-          name,
-          year,
-          stage: 'forming',
-        },
-      })
-      if (newGroup) {
-        console.log(`Upserted group ${newGroup.name} (${newGroup.year})`)
-        try {
-          const leaderProfile = await photon.profile.findOne({
-            where: { id: leader },
-          })
-          if (leaderProfile) {
-            await photon.group.update({
-              where: { id: newGroup.id },
-              data: { leader: { connect: { id: leader } } },
-            })
-          } else {
-            console.warn(`Not found leader profile: ${leader}`)
-          }
-        } catch (err) {
-          console.error(`Not found leader`)
-        }
-        for (const member of members) {
-          const profile = await photon.profile.findOne({
-            where: { id: member },
-          })
-          if (profile) {
-            const updatedGroup = await photon.group.update({
-              where: { id },
-              data: { members: { connect: { id: member } } },
-            })
-            console.log(
-              `Connected member ${profile.fullName} to group ${updatedGroup.name}`,
-            )
-          } else {
-            console.warn(
-              `Not found member id ${member} in database, check it again!`,
-            )
-          }
-        }
+  const all = groups.map(group =>
+    limitRetry(async () => {
+      const { id, name, year, leader: listLeader, members } = group
+      const leader = listLeader[0]
+      const groupData = {
+        id,
+        name,
+        year,
       }
-    } catch (err) {
-      console.error(err)
-    }
-  })
+      try {
+        console.log(`Creating Group: ${JSON.stringify(groupData, null, 2)}`)
+        const newGroup = await photon.group.upsert({
+          where: { id },
+          update: {
+            id,
+            name,
+            year,
+          },
+          create: {
+            id,
+            name,
+            year,
+            stage: 'forming',
+          },
+        })
+        if (newGroup) {
+          console.log(`Upserted group ${newGroup.name} (${newGroup.year})`)
+          try {
+            const leaderProfile = await photon.profile.findOne({
+              where: { id: leader },
+            })
+            if (leaderProfile) {
+              await photon.group.update({
+                where: { id: newGroup.id },
+                data: { leader: { connect: { id: leader } } },
+              })
+            } else {
+              console.warn(`Not found leader profile: ${leader}`)
+            }
+          } catch (err) {
+            console.error(`Not found leader`)
+          }
+          const allMembersConnect = members.map((member: any) =>
+            limitRetry(async () => {
+              const profile = await photon.profile.findOne({
+                where: { id: member },
+              })
+              if (profile) {
+                const updatedGroup = await photon.group.update({
+                  where: { id },
+                  data: { members: { connect: { id: member } } },
+                })
+                console.log(
+                  `Connected member ${profile.fullName} to group ${updatedGroup.name}`,
+                )
+              } else {
+                console.warn(
+                  `Not found member id ${member} in database, check it again!`,
+                )
+              }
+            }),
+          )
+          await Promise.all(allMembersConnect)
+          console.log(
+            `All member in group ${newGroup.name} has been connected!`,
+          )
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }),
+  )
   await Promise.all(all)
   console.log('Done!')
 }
@@ -364,31 +411,62 @@ export const seedActivity = async () => {
 const seedSchedule = async () => {
   console.log('SEEDING: Schedule')
   const scheduleList = await getSchedule()
-  for (const schedule of scheduleList) {
-    const {
-      id,
-      activity: [actId],
-      date,
-    } = schedule
-    try {
-      const newSchedule = await photon.schedule.upsert({
+  const allSchedules = scheduleList.map((schedule: any) =>
+    limitRetry(async () => {
+      const {
+        id,
+        activity: [actId],
+        date,
+      } = schedule
+      try {
+        const newSchedule = await photon.schedule.upsert({
+          where: { id },
+          create: { id, activity: { connect: { id: actId } }, date },
+          update: { id, activity: { connect: { id: actId } }, date },
+        })
+        console.log(`Upsert schedule: ${newSchedule.date}`)
+      } catch (err) {
+        console.error(`Upsert schedule error: ${err.message}`)
+      }
+    }),
+  )
+  await Promise.all(allSchedules)
+  console.log(`All schedules synced!`)
+}
+
+const seedUser = async () => {
+  console.log('SEEDING: User')
+  const users = await getUsers()
+  const allSchedules = users.map((user: any) =>
+    limitRetry(async () => {
+      const { id, email, password, profile } = user
+      const hashedPassword = await hash(password, 10)
+      const newUserData = {
+        id,
+        email,
+        password: hashedPassword,
+        permission: 4,
+        profile: { connect: { id: profile } },
+      }
+      const newUser = await photon.user.upsert({
         where: { id },
-        create: { id, activity: { connect: { id: actId } }, date },
-        update: { id, activity: { connect: { id: actId } }, date },
+        create: newUserData,
+        update: newUserData,
       })
-      console.log(`Upsert schedule: ${newSchedule.date}`)
-    } catch (err) {
-      console.error(`Upsert schedule error: ${err.message}`)
-    }
-  }
+      console.log(`Upser user: ${JSON.stringify(newUser.email, null, 2)}`)
+    }),
+  )
+  await Promise.all(allSchedules)
+  console.log(`All schedules synced!`)
 }
 
 const main = async () => {
   console.log(process.env.DATABASE_URL)
   // await seedActivity()
   // await seedSchedule()
-  await seedProfile()
+  // await seedProfile()
   // await seedGroup()
+  await seedUser()
   console.log(`Done!`)
 }
 

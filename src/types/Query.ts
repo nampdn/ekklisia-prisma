@@ -22,6 +22,11 @@ export const Query = queryType({
       },
     })
 
+    // t.list.field('scheduleToday', {
+    //   {type: 'Schedule',
+    // nullable: false}
+    // })
+
     t.field('me', {
       type: 'User',
       nullable: true,
