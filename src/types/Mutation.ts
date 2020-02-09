@@ -21,6 +21,7 @@ export const Mutation = mutationType({
           data: {
             name,
             email,
+            permission: 0,
             password: hashedPassword,
           },
         })
