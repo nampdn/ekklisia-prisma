@@ -18,12 +18,13 @@ model Post {
 }
 
 model User {
-  id       String   @default(cuid()) @id
-  email    String   @unique
-  password String
-  name     String?
-  posts    Post[]
-  profile  Profile? @relation(name: "UserProfile")
+  id         String   @default(cuid()) @id
+  email      String   @unique
+  password   String
+  permission Int
+  name       String?
+  posts      Post[]
+  profile    Profile? @relation(name: "UserProfile")
 }
 
 model Profile {
@@ -94,6 +95,7 @@ model Schedule {
 
 model Attendance {
   id        String   @default(cuid()) @id
+  slug      String   @unique
   schedule  Schedule @relation(name: "AttendanceSchedule")
   member    Profile  @relation(name: "AttendanceProfile")
   status    String

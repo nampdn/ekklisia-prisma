@@ -7,6 +7,20 @@ export const Query = queryType({
     t.crud.groups()
     t.crud.activities()
     t.crud.attendances()
+    t.crud.schedules()
+
+    t.list.field('scheduleThisWeek', {
+      type: 'Schedule',
+      nullable: false,
+      resolve: (parent, args, ctx) => {
+        const userId = getUserId(ctx)
+        return ctx.prisma.schedule.findMany({
+          where: {
+            date: { gt: new Date() },
+          },
+        })
+      },
+    })
 
     t.field('me', {
       type: 'User',

@@ -3,15 +3,4 @@
 # lift lockfile v1
 # Read more about conflict resolution here: TODO
 
-20191231160930-add-profile
-20200103053223-add-group
-20200103072059-add-slug-for-group
-20200103143023-add-activity-and-org
-20200106060153-profile-gender-as-string
-20200106060702-add-org-ref-field-for-profile
-20200106064512-add-created-at-and-updated-at-for-profile
-20200109043458-add-schedule-and-attendance
-20200109050804
-20200109084935-add-relationship
-20200131215046-add-slug-for-activity
-20200209052641-add-attendances-to-schedules
+20200209094458-attedance-slug

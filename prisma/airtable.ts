@@ -3,6 +3,12 @@ import * as dotenv from 'dotenv'
 import { PrismaClient } from '@prisma/client'
 import { PhoneNumberUtil, PhoneNumberFormat } from 'google-libphonenumber'
 import { changePhonePrefix } from 'vikit'
+import pLimit from 'p-limit'
+import pRetry from 'p-retry'
+
+const limit = pLimit(20)
+const limitRetry = (f: () => Promise<any>) =>
+  limit(() => pRetry(f, { retries: 5 }))
 
 dotenv.config()
 
@@ -230,27 +236,31 @@ const seedProfile = async () => {
   const orgs = await photon.org.findMany({ first: 1000 })
   console.log(`orgs: ${orgs[0].name}`)
   const org = orgs[0]
-  const all = profiles.map(async profile => {
-    try {
-      const newProfile = await photon.profile.upsert({
-        where: {
-          id: profile.id,
-          // oldId: profile.oldId,
-        },
-        create: {
-          ...profile,
-          org: { connect: { id: org.id } },
-        },
-        update: {
-          ...profile,
-          org: { connect: { id: org.id } },
-        },
-      })
-      console.log('created profile', newProfile)
-    } catch (err) {
-      console.log('Profile dupplicated', profile.name, err.message)
-    }
-  })
+  const all = profiles.map(profile =>
+    limitRetry(async () => {
+      console.log(`Try to create profile: ${profile.fullName}`)
+      try {
+        const newProfile = await photon.profile.upsert({
+          where: {
+            id: profile.id,
+            // oldId: profile.oldId,
+          },
+          create: {
+            ...profile,
+            org: { connect: { id: org.id } },
+          },
+          update: {
+            ...profile,
+            org: { connect: { id: org.id } },
+          },
+        })
+        console.log('created profile', newProfile.fullName)
+      } catch (err) {
+        console.log('Profile error', profile.fullName, err.message)
+        throw err
+      }
+    }),
+  )
   await Promise.all(all)
   console.log('[Completed] Seed Profile')
   // await getGroups()
@@ -375,10 +385,11 @@ const seedSchedule = async () => {
 
 const main = async () => {
   console.log(process.env.DATABASE_URL)
-  await seedActivity()
+  // await seedActivity()
   // await seedSchedule()
-  // await seedProfile()
+  await seedProfile()
   // await seedGroup()
+  console.log(`Done!`)
 }
 
 main()

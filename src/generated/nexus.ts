@@ -57,6 +57,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     present: boolean; // Boolean!
     schedule: NexusGenInputs['ScheduleCreateOneWithoutAttendancesInput']; // ScheduleCreateOneWithoutAttendancesInput!
+    slug: string; // String!
     status: string; // String!
     updatedAt?: any | null; // DateTime
   }
@@ -65,11 +66,13 @@ export interface NexusGenInputs {
     id?: string | null; // String
     member: NexusGenInputs['ProfileCreateOneWithoutAttendancesInput']; // ProfileCreateOneWithoutAttendancesInput!
     present: boolean; // Boolean!
+    slug: string; // String!
     status: string; // String!
     updatedAt?: any | null; // DateTime
   }
   AttendanceWhereUniqueInput: { // input type
     id?: string | null; // String
+    slug?: string | null; // String
   }
   GroupCreateInput: { // input type
     createdAt?: any | null; // DateTime
@@ -423,6 +426,7 @@ export interface NexusGenInputs {
     id?: string | null; // String
     name?: string | null; // String
     password: string; // String!
+    permission: number; // Int!
     posts?: NexusGenInputs['PostCreateManyWithoutAuthorInput'] | null; // PostCreateManyWithoutAuthorInput
   }
   UserWhereUniqueInput: { // input type
@@ -582,6 +586,8 @@ export interface NexusGenFieldTypes {
     me: NexusGenRootTypes['User'] | null; // User
     post: NexusGenRootTypes['Post'] | null; // Post
     profiles: NexusGenRootTypes['Profile'][]; // [Profile!]!
+    schedules: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
+    scheduleThisWeek: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
   }
   Schedule: { // field return type
     activity: NexusGenRootTypes['Activity']; // Activity!
@@ -594,6 +600,7 @@ export interface NexusGenFieldTypes {
     id: string; // String!
     name: string | null; // String
     posts: NexusGenRootTypes['Post'][]; // [Post!]!
+    profile: NexusGenRootTypes['Profile'] | null; // Profile
   }
 }
 
@@ -688,6 +695,13 @@ export interface NexusGenArgTypes {
       id?: string | null; // ID
     }
     profiles: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+    schedules: { // args
       after?: string | null; // String
       before?: string | null; // String
       first?: number | null; // Int

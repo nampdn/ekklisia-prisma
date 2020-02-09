@@ -7,5 +7,7 @@ export const User = objectType({
     t.model.name()
     t.model.email()
     t.model.posts({ pagination: false })
+    t.model.profile()
+    // t.model.role()
   },
 })

@@ -2,6 +2,13 @@
   "version": "0.3.14-fixed",
   "steps": [
     {
+      "tag": "CreateField",
+      "model": "User",
+      "field": "permission",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
       "tag": "DeleteField",
       "model": "Activity",
       "field": "type"
@@ -37,6 +44,24 @@
       },
       "argument": "name",
       "value": "\"AttendanceSchedule\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Attendance",
+      "field": "slug",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Attendance",
+          "field": "slug"
+        },
+        "directive": "unique"
+      }
     }
   ]
 }

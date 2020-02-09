@@ -62,6 +62,7 @@ input AttendanceCreateWithoutMemberInput {
   id: String
   present: Boolean!
   schedule: ScheduleCreateOneWithoutAttendancesInput!
+  slug: String!
   status: String!
   updatedAt: DateTime
 }
@@ -71,12 +72,14 @@ input AttendanceCreateWithoutScheduleInput {
   id: String
   member: ProfileCreateOneWithoutAttendancesInput!
   present: Boolean!
+  slug: String!
   status: String!
   updatedAt: DateTime
 }
 
 input AttendanceWhereUniqueInput {
   id: String
+  slug: String
 }
 
 type AuthPayload {
@@ -498,6 +501,8 @@ type Query {
   me: User
   post(id: ID): Post
   profiles(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
+  schedules(after: String, before: String, first: Int, last: Int, skip: Int): [Schedule!]!
+  scheduleThisWeek: [Schedule!]!
 }
 
 type Schedule {
@@ -538,6 +543,7 @@ type User {
   id: String!
   name: String
   posts: [Post!]!
+  profile: Profile
 }
 
 input UserCreateManyWithoutProfileInput {
@@ -550,6 +556,7 @@ input UserCreateWithoutProfileInput {
   id: String
   name: String
   password: String!
+  permission: Int!
   posts: PostCreateManyWithoutAuthorInput
 }
 
