@@ -550,6 +550,7 @@ export interface NexusGenFieldTypes {
     createProfile: NexusGenRootTypes['Profile']; // Profile!
     deletePost: NexusGenRootTypes['Post'] | null; // Post
     login: NexusGenRootTypes['AuthPayload']; // AuthPayload!
+    makeAttendance: NexusGenRootTypes['Attendance'][]; // [Attendance!]!
     publish: NexusGenRootTypes['Post'] | null; // Post
     signup: NexusGenRootTypes['AuthPayload']; // AuthPayload!
   }
@@ -588,6 +589,7 @@ export interface NexusGenFieldTypes {
     post: NexusGenRootTypes['Post'] | null; // Post
     profiles: NexusGenRootTypes['Profile'][]; // [Profile!]!
     schedules: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
+    scheduleThisWeek: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
   }
   Schedule: { // field return type
     activity: NexusGenRootTypes['Activity']; // Activity!
@@ -640,6 +642,10 @@ export interface NexusGenArgTypes {
     login: { // args
       email: string; // String!
       password: string; // String!
+    }
+    makeAttendance: { // args
+      profileIds?: string[] | null; // [ID!]
+      scheduleId?: string | null; // ID
     }
     publish: { // args
       id?: string | null; // ID

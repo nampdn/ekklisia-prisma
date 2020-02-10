@@ -1,4 +1,5 @@
 import { idArg, queryType, stringArg } from 'nexus'
+import * as moment from 'moment'
 import { getUserId } from '../utils'
 
 export const Query = queryType({
@@ -9,18 +10,23 @@ export const Query = queryType({
     t.crud.attendances()
     t.crud.schedules()
 
-    // t.list.field('scheduleThisWeek', {
-    //   type: 'Schedule',
-    //   nullable: false,
-    //   resolve: (parent, args, ctx) => {
-    //     const userId = getUserId(ctx)
-    //     return ctx.prisma.schedule.findMany({
-    //       where: {
-    //         date: { gt: new Date() },
-    //       },
-    //     })
-    //   },
-    // })
+    t.list.field('scheduleThisWeek', {
+      type: 'Schedule',
+      nullable: false,
+      list: true,
+      resolve: async (parent, args, ctx) => {
+        const userId = getUserId(ctx)
+        const today = moment()
+        const from_date = today.startOf('week')
+        const to_date = today.endOf('week')
+        const schedules = await ctx.prisma.schedule.findMany({
+          where: {
+            date: { lte: to_date.toString(), gte: from_date.toString() },
+          },
+        })
+        return schedules
+      },
+    })
 
     t.list.field('membersInGroup', {
       type: 'Profile',

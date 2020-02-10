@@ -2,6 +2,7 @@ import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { idArg, mutationType, stringArg } from 'nexus'
 import { APP_SECRET, getUserId } from '../utils'
+import { createLexer } from 'graphql'
 
 export const Mutation = mutationType({
   definition(t) {
@@ -99,6 +100,16 @@ export const Mutation = mutationType({
           where: { id },
           data: { published: true },
         })
+      },
+    })
+
+    t.field('makeAttendance', {
+      type: 'Attendance',
+      nullable: false,
+      list: true,
+      args: { scheduleId: idArg(), profileIds: idArg({ list: true }) },
+      resolve: (parent, { scheduleId, profileIds }, ctx) => {
+        return []
       },
     })
   },
