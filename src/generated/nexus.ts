@@ -589,7 +589,7 @@ export interface NexusGenFieldTypes {
     post: NexusGenRootTypes['Post'] | null; // Post
     profiles: NexusGenRootTypes['Profile'][]; // [Profile!]!
     schedules: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
-    scheduleThisWeek: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
+    scheduleUntilNow: NexusGenRootTypes['Schedule'][]; // [Schedule!]!
   }
   Schedule: { // field return type
     activity: NexusGenRootTypes['Activity']; // Activity!

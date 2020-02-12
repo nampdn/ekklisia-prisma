@@ -31,6 +31,7 @@ export const permissions = shield({
     groups: not(rules.isAuthenticatedUser),
     profiles: not(rules.isAuthenticatedUser),
     activities: not(rules.isAuthenticatedUser),
+    scheduleUntilNow: rules.isAuthenticatedUser,
   },
   Mutation: {
     createDraft: rules.isAuthenticatedUser,

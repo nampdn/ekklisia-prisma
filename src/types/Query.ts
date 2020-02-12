@@ -10,19 +10,17 @@ export const Query = queryType({
     t.crud.attendances()
     t.crud.schedules()
 
-    t.list.field('scheduleThisWeek', {
+    t.list.field('scheduleUntilNow', {
       type: 'Schedule',
       nullable: false,
-      list: true,
       resolve: async (parent, args, ctx) => {
-        const userId = getUserId(ctx)
         const today = moment()
-        const from_date = today.startOf('week')
         const to_date = today.endOf('week')
         const schedules = await ctx.prisma.schedule.findMany({
           where: {
-            date: { lte: to_date.toString(), gte: from_date.toString() },
+            date: { lte: to_date.toDate() },
           },
+          orderBy: { date: 'desc' },
         })
         return schedules
       },

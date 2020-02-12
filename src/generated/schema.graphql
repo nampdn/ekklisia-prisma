@@ -504,7 +504,7 @@ type Query {
   post(id: ID): Post
   profiles(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
   schedules(after: String, before: String, first: Int, last: Int, skip: Int): [Schedule!]!
-  scheduleThisWeek: [Schedule!]!
+  scheduleUntilNow: [Schedule!]!
 }
 
 type Schedule {
