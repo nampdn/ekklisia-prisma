@@ -45,7 +45,7 @@ export const Query = queryType({
           if (groups[0]) {
             const profiles = await ctx.prisma.group
               .findOne({ where: { id: groups[0].id } })
-              .members()
+              .members({ orderBy: { fullName: 'asc' } })
             return profiles
           }
         }

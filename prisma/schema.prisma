@@ -80,10 +80,11 @@ model Org {
 }
 
 model Activity {
-  id   String @default(cuid()) @id
-  slug String @unique
-  name String
-  org  Org
+  id    String  @default(cuid()) @id
+  slug  String  @unique
+  name  String
+  color String?
+  org   Org
 }
 
 model Schedule {

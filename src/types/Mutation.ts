@@ -109,6 +109,7 @@ export const Mutation = mutationType({
       list: true,
       args: { scheduleId: idArg(), profileIds: idArg({ list: true }) },
       resolve: (parent, { scheduleId, profileIds }, ctx) => {
+        console.log(scheduleId, profileIds)
         return []
       },
     })
