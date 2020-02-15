@@ -297,7 +297,7 @@ type Mutation {
   createProfile(data: ProfileCreateInput!): Profile!
   deletePost(id: ID): Post
   login(email: String!, password: String!): AuthPayload!
-  makeAttendance(absentees: [ID!], attendees: [ID!]!, scheduleId: ID!): Attendance!
+  makeAttendance(absentees: [ID!], attendees: [ID!], scheduleId: ID!): Attendance!
   publish(id: ID): Post
   signup(email: String!, name: String, password: String!): AuthPayload!
 }

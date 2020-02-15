@@ -760,7 +760,7 @@ export interface NexusGenArgTypes {
     }
     makeAttendance: { // args
       absentees?: string[] | null; // [ID!]
-      attendees: string[]; // [ID!]!
+      attendees?: string[] | null; // [ID!]
       scheduleId: string; // ID!
     }
     publish: { // args

@@ -2,8 +2,6 @@ import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { idArg, mutationType, stringArg } from 'nexus'
 import { APP_SECRET, getUserId, getGroupsByUser } from '../utils'
-import { createLexer } from 'graphql'
-import { PrismaClient } from '@prisma/client'
 
 export const Mutation = mutationType({
   definition(t) {
@@ -108,10 +106,15 @@ export const Mutation = mutationType({
       type: 'Attendance',
       args: {
         scheduleId: idArg({ required: true }),
-        attendees: idArg({ list: true, required: true }),
+        attendees: idArg({ list: true }),
         absentees: idArg({ list: true }),
       },
-      resolve: async (parent, { scheduleId, attendees, absentees }, ctx) => {
+      resolve: async (
+        _,
+        { scheduleId, attendees = [], absentees = [] },
+        ctx,
+      ) => {
+        // TODO specify groupId by the client to match the group quicklier
         const groups = await getGroupsByUser(ctx)
         if (groups.length < 1) {
           throw new Error(
@@ -130,22 +133,21 @@ export const Mutation = mutationType({
         try {
           const currentGroup = groups[0]
           const slug = `${schedule.id}$${currentGroup.id}`
-          const data = {
+          const data: any = {
             slug,
             group: { connect: { id: currentGroup.id } },
             schedule: { connect: { id: schedule.id } },
-            attendees: {
-              connect: (attendees || []).map((attendeeId: string) => ({
-                id: attendeeId,
-              })),
-            },
-            absentees: {
-              connect: (absentees || []).map((absenteeId: string) => ({
-                id: absenteeId,
-              })),
-            },
             status: 'done',
           }
+          if (attendees && attendees.length)
+            data.attendees = {
+              connect: attendees.map((id: string) => ({ id })),
+            }
+          if (absentees && absentees.length)
+            data.absentees = {
+              connect: absentees.map((id: string) => ({ id })),
+            }
+
           console.log(JSON.stringify(data, null, 2))
           return await ctx.prisma.attendance.upsert({
             where: { slug },
