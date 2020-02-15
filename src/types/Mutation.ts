@@ -1,8 +1,9 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { idArg, mutationType, stringArg } from 'nexus'
-import { APP_SECRET, getUserId } from '../utils'
+import { APP_SECRET, getUserId, getGroupsByUser } from '../utils'
 import { createLexer } from 'graphql'
+import { PrismaClient } from '@prisma/client'
 
 export const Mutation = mutationType({
   definition(t) {
@@ -105,12 +106,57 @@ export const Mutation = mutationType({
 
     t.field('makeAttendance', {
       type: 'Attendance',
-      nullable: false,
-      list: true,
-      args: { scheduleId: idArg(), profileIds: idArg({ list: true }) },
-      resolve: (parent, { scheduleId, profileIds }, ctx) => {
-        console.log(scheduleId, profileIds)
-        return []
+      args: {
+        scheduleId: idArg({ required: true }),
+        attendees: idArg({ list: true, required: true }),
+        absentees: idArg({ list: true }),
+      },
+      resolve: async (parent, { scheduleId, attendees, absentees }, ctx) => {
+        const groups = await getGroupsByUser(ctx)
+        if (groups.length < 1) {
+          throw new Error(
+            'Có lỗi liên quan đến nhóm, vui lòng thử thoát ra và đăng nhập lại!',
+          )
+        }
+
+        const schedule = await ctx.prisma.schedule.findOne({
+          where: { id: scheduleId },
+        })
+        if (!schedule)
+          throw new Error(
+            'Không tìm thấy lịch cho phần điểm danh này, vui lòng kiểm tra lại!',
+          )
+
+        try {
+          const currentGroup = groups[0]
+          const slug = `${schedule.id}$${currentGroup.id}`
+          const data = {
+            slug,
+            group: { connect: { id: currentGroup.id } },
+            schedule: { connect: { id: schedule.id } },
+            attendees: {
+              connect: (attendees || []).map((attendeeId: string) => ({
+                id: attendeeId,
+              })),
+            },
+            absentees: {
+              connect: (absentees || []).map((absenteeId: string) => ({
+                id: absenteeId,
+              })),
+            },
+            status: 'done',
+          }
+          console.log(JSON.stringify(data, null, 2))
+          return await ctx.prisma.attendance.upsert({
+            where: { slug },
+            create: data,
+            update: data,
+          })
+        } catch (err) {
+          throw new Error(
+            'Không thể điểm danh ngay lúc này, vui lòng liên hệ người hỗ trợ kĩ thuật để được hỗ trợ!',
+          )
+        }
       },
     })
   },

@@ -4,10 +4,12 @@ export const Attendance = objectType({
   name: 'Attendance',
   definition(t) {
     t.model.id()
-    t.model.member()
     t.model.schedule()
     t.model.status()
-    t.model.present()
+    t.model.attendees()
+    t.model.absentees()
+    t.model.group()
     t.model.createdAt()
+    t.model.updatedAt()
   },
 })

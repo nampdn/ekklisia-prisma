@@ -20,6 +20,7 @@ input ActivityCreateOneWithoutSchedulesInput {
 }
 
 input ActivityCreateWithoutOrgInput {
+  color: String
   id: String
   name: String!
   schedules: ScheduleCreateManyWithoutActivityInput
@@ -27,6 +28,7 @@ input ActivityCreateWithoutOrgInput {
 }
 
 input ActivityCreateWithoutSchedulesInput {
+  color: String
   id: String
   name: String!
   org: OrgCreateOneWithoutActivitiesInput!
@@ -39,39 +41,75 @@ input ActivityWhereUniqueInput {
 }
 
 type Attendance {
+  absentees(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
+  attendees(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
   createdAt: DateTime!
+  group: Group!
   id: String!
-  member: Profile!
-  present: Boolean!
   schedule: Schedule!
   status: String!
+  updatedAt: DateTime!
 }
 
-input AttendanceCreateManyWithoutMemberInput {
+input AttendanceCreateManyWithoutAbsenteesInput {
   connect: [AttendanceWhereUniqueInput!]
-  create: [AttendanceCreateWithoutMemberInput!]
+  create: [AttendanceCreateWithoutAbsenteesInput!]
 }
 
-input AttendanceCreateManyWithoutScheduleInput {
+input AttendanceCreateManyWithoutAttendeesInput {
   connect: [AttendanceWhereUniqueInput!]
-  create: [AttendanceCreateWithoutScheduleInput!]
+  create: [AttendanceCreateWithoutAttendeesInput!]
 }
 
-input AttendanceCreateWithoutMemberInput {
+input AttendanceCreateManyWithoutGroupInput {
+  connect: [AttendanceWhereUniqueInput!]
+  create: [AttendanceCreateWithoutGroupInput!]
+}
+
+input AttendanceCreateOneWithoutScheduleInput {
+  connect: AttendanceWhereUniqueInput
+  create: AttendanceCreateWithoutScheduleInput
+}
+
+input AttendanceCreateWithoutAbsenteesInput {
+  attendees: ProfileCreateManyWithoutAttendeeInput
+  createdAt: DateTime
+  group: GroupCreateOneWithoutAttendancesInput!
+  id: String
+  schedule: ScheduleCreateOneWithoutAttendanceInput!
+  slug: String!
+  status: String!
+  updatedAt: DateTime
+}
+
+input AttendanceCreateWithoutAttendeesInput {
+  absentees: ProfileCreateManyWithoutAbsenteeInput
+  createdAt: DateTime
+  group: GroupCreateOneWithoutAttendancesInput!
+  id: String
+  schedule: ScheduleCreateOneWithoutAttendanceInput!
+  slug: String!
+  status: String!
+  updatedAt: DateTime
+}
+
+input AttendanceCreateWithoutGroupInput {
+  absentees: ProfileCreateManyWithoutAbsenteeInput
+  attendees: ProfileCreateManyWithoutAttendeeInput
   createdAt: DateTime
   id: String
-  present: Boolean!
-  schedule: ScheduleCreateOneWithoutAttendancesInput!
+  schedule: ScheduleCreateOneWithoutAttendanceInput!
   slug: String!
   status: String!
   updatedAt: DateTime
 }
 
 input AttendanceCreateWithoutScheduleInput {
+  absentees: ProfileCreateManyWithoutAbsenteeInput
+  attendees: ProfileCreateManyWithoutAttendeeInput
   createdAt: DateTime
+  group: GroupCreateOneWithoutAttendancesInput!
   id: String
-  member: ProfileCreateOneWithoutAttendancesInput!
-  present: Boolean!
   slug: String!
   status: String!
   updatedAt: DateTime
@@ -97,6 +135,7 @@ type Group {
 }
 
 input GroupCreateInput {
+  attendances: AttendanceCreateManyWithoutGroupInput
   createdAt: DateTime
   endAt: DateTime
   groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
@@ -127,12 +166,34 @@ input GroupCreateManyWithoutOrgInput {
   create: [GroupCreateWithoutOrgInput!]
 }
 
+input GroupCreateOneWithoutAttendancesInput {
+  connect: GroupWhereUniqueInput
+  create: GroupCreateWithoutAttendancesInput
+}
+
 input GroupCreateOneWithoutGroupEnrollmentsInput {
   connect: GroupWhereUniqueInput
   create: GroupCreateWithoutGroupEnrollmentsInput
 }
 
+input GroupCreateWithoutAttendancesInput {
+  createdAt: DateTime
+  endAt: DateTime
+  groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
+  id: String
+  leader: ProfileCreateOneWithoutLeaderInput
+  members: ProfileCreateManyWithoutMemberInput
+  name: String!
+  org: OrgCreateOneWithoutGroupsInput
+  slug: String
+  stage: String!
+  startAt: DateTime
+  updatedAt: DateTime
+  year: Int
+}
+
 input GroupCreateWithoutGroupEnrollmentsInput {
+  attendances: AttendanceCreateManyWithoutGroupInput
   createdAt: DateTime
   endAt: DateTime
   id: String
@@ -148,6 +209,7 @@ input GroupCreateWithoutGroupEnrollmentsInput {
 }
 
 input GroupCreateWithoutLeaderInput {
+  attendances: AttendanceCreateManyWithoutGroupInput
   createdAt: DateTime
   endAt: DateTime
   groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
@@ -163,6 +225,7 @@ input GroupCreateWithoutLeaderInput {
 }
 
 input GroupCreateWithoutMembersInput {
+  attendances: AttendanceCreateManyWithoutGroupInput
   createdAt: DateTime
   endAt: DateTime
   groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
@@ -178,6 +241,7 @@ input GroupCreateWithoutMembersInput {
 }
 
 input GroupCreateWithoutOrgInput {
+  attendances: AttendanceCreateManyWithoutGroupInput
   createdAt: DateTime
   endAt: DateTime
   groupEnrollments: GroupEnrollmentCreateManyWithoutGroupInput
@@ -233,7 +297,7 @@ type Mutation {
   createProfile(data: ProfileCreateInput!): Profile!
   deletePost(id: ID): Post
   login(email: String!, password: String!): AuthPayload!
-  makeAttendance(profileIds: [ID!], scheduleId: ID): [Attendance!]!
+  makeAttendance(absentees: [ID!], attendees: [ID!]!, scheduleId: ID!): Attendance!
   publish(id: ID): Post
   signup(email: String!, name: String, password: String!): AuthPayload!
 }
@@ -324,7 +388,8 @@ type Profile {
 }
 
 input ProfileCreateInput {
-  attendances: AttendanceCreateManyWithoutMemberInput
+  absentee: AttendanceCreateManyWithoutAbsenteesInput
+  attendee: AttendanceCreateManyWithoutAttendeesInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -347,6 +412,16 @@ input ProfileCreateInput {
   yearOfBirth: Int
 }
 
+input ProfileCreateManyWithoutAbsenteeInput {
+  connect: [ProfileWhereUniqueInput!]
+  create: [ProfileCreateWithoutAbsenteeInput!]
+}
+
+input ProfileCreateManyWithoutAttendeeInput {
+  connect: [ProfileWhereUniqueInput!]
+  create: [ProfileCreateWithoutAttendeeInput!]
+}
+
 input ProfileCreateManyWithoutMemberInput {
   connect: [ProfileWhereUniqueInput!]
   create: [ProfileCreateWithoutMemberInput!]
@@ -355,11 +430,6 @@ input ProfileCreateManyWithoutMemberInput {
 input ProfileCreateManyWithoutOrgInput {
   connect: [ProfileWhereUniqueInput!]
   create: [ProfileCreateWithoutOrgInput!]
-}
-
-input ProfileCreateOneWithoutAttendancesInput {
-  connect: ProfileWhereUniqueInput
-  create: ProfileCreateWithoutAttendancesInput
 }
 
 input ProfileCreateOneWithoutGroupEnrollmentsInput {
@@ -372,7 +442,32 @@ input ProfileCreateOneWithoutLeaderInput {
   create: ProfileCreateWithoutLeaderInput
 }
 
-input ProfileCreateWithoutAttendancesInput {
+input ProfileCreateWithoutAbsenteeInput {
+  attendee: AttendanceCreateManyWithoutAttendeesInput
+  birthday: DateTime
+  createdAt: DateTime
+  dayOfBirth: Int
+  email: String
+  facebookId: String
+  fullName: String!
+  gender: String
+  groupEnrollments: GroupEnrollmentCreateManyWithoutProfileInput
+  id: String
+  joinDate: DateTime
+  leader: GroupCreateManyWithoutLeaderInput
+  member: GroupCreateManyWithoutMembersInput
+  monthOfBirth: Int
+  oldId: String
+  org: OrgCreateOneWithoutProfilesInput
+  phoneNumber: String
+  slug: String
+  updatedAt: DateTime
+  users: UserCreateManyWithoutProfileInput
+  yearOfBirth: Int
+}
+
+input ProfileCreateWithoutAttendeeInput {
+  absentee: AttendanceCreateManyWithoutAbsenteesInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -396,7 +491,8 @@ input ProfileCreateWithoutAttendancesInput {
 }
 
 input ProfileCreateWithoutGroupEnrollmentsInput {
-  attendances: AttendanceCreateManyWithoutMemberInput
+  absentee: AttendanceCreateManyWithoutAbsenteesInput
+  attendee: AttendanceCreateManyWithoutAttendeesInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -419,7 +515,8 @@ input ProfileCreateWithoutGroupEnrollmentsInput {
 }
 
 input ProfileCreateWithoutLeaderInput {
-  attendances: AttendanceCreateManyWithoutMemberInput
+  absentee: AttendanceCreateManyWithoutAbsenteesInput
+  attendee: AttendanceCreateManyWithoutAttendeesInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -442,7 +539,8 @@ input ProfileCreateWithoutLeaderInput {
 }
 
 input ProfileCreateWithoutMemberInput {
-  attendances: AttendanceCreateManyWithoutMemberInput
+  absentee: AttendanceCreateManyWithoutAbsenteesInput
+  attendee: AttendanceCreateManyWithoutAttendeesInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -465,7 +563,8 @@ input ProfileCreateWithoutMemberInput {
 }
 
 input ProfileCreateWithoutOrgInput {
-  attendances: AttendanceCreateManyWithoutMemberInput
+  absentee: AttendanceCreateManyWithoutAbsenteesInput
+  attendee: AttendanceCreateManyWithoutAttendeesInput
   birthday: DateTime
   createdAt: DateTime
   dayOfBirth: Int
@@ -502,6 +601,7 @@ type Query {
   me: User
   membersInGroup: [Profile!]!
   post(id: ID): Post
+  profile(where: ProfileWhereUniqueInput!): Profile
   profiles(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
   schedules(after: String, before: String, first: Int, last: Int, skip: Int): [Schedule!]!
   scheduleUntilNow: [Schedule!]!
@@ -509,7 +609,6 @@ type Query {
 
 type Schedule {
   activity: Activity!
-  attendances(after: String, before: String, first: Int, last: Int, skip: Int): [Attendance!]!
   date: DateTime!
   id: String!
 }
@@ -519,18 +618,18 @@ input ScheduleCreateManyWithoutActivityInput {
   create: [ScheduleCreateWithoutActivityInput!]
 }
 
-input ScheduleCreateOneWithoutAttendancesInput {
+input ScheduleCreateOneWithoutAttendanceInput {
   connect: ScheduleWhereUniqueInput
-  create: ScheduleCreateWithoutAttendancesInput
+  create: ScheduleCreateWithoutAttendanceInput
 }
 
 input ScheduleCreateWithoutActivityInput {
-  attendances: AttendanceCreateManyWithoutScheduleInput
+  attendance: AttendanceCreateOneWithoutScheduleInput!
   date: DateTime!
   id: String
 }
 
-input ScheduleCreateWithoutAttendancesInput {
+input ScheduleCreateWithoutAttendanceInput {
   activity: ActivityCreateOneWithoutSchedulesInput!
   date: DateTime!
   id: String

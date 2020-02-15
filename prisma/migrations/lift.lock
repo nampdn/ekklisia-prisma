@@ -4,3 +4,6 @@
 # Read more about conflict resolution here: TODO
 
 20200209094458-attedance-slug
+20200215233944-adjust-attendance-model
+20200216003557-fix-schedule-attendance-relation
+20200216005404-fixed-typo-on-schedule-field

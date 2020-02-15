@@ -1,0 +1,224 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Profile",
+      "field": "attendee",
+      "type": "Attendance",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "attendee"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "attendee"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceAttendee\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Profile",
+      "field": "absentee",
+      "type": "Attendance",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "absentee"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Profile",
+          "field": "absentee"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceAbsentee\""
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Profile",
+      "field": "attendances"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Activity",
+      "field": "color",
+      "type": "String",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Schedule",
+      "field": "attendance",
+      "type": "Attendance",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Schedule",
+          "field": "attendance"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Schedule",
+          "field": "attendance"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceSchedule\""
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Schedule",
+      "field": "attendances"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Attendance",
+      "field": "group",
+      "type": "Group",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Attendance",
+          "field": "group"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Attendance",
+          "field": "group"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceGroup\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Attendance",
+      "field": "attendees",
+      "type": "Profile",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Attendance",
+          "field": "attendees"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Attendance",
+          "field": "attendees"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceAttendee\""
+    },
+    {
+      "tag": "CreateField",
+      "model": "Attendance",
+      "field": "absentees",
+      "type": "Profile",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Attendance",
+          "field": "absentees"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Attendance",
+          "field": "absentees"
+        },
+        "directive": "relation"
+      },
+      "argument": "name",
+      "value": "\"AttendanceAbsentee\""
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Attendance",
+      "field": "member"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Attendance",
+      "field": "present"
+    }
+  ]
+}

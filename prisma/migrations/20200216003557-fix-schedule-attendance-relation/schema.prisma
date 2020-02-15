@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Post {
@@ -89,10 +89,10 @@ model Activity {
 }
 
 model Schedule {
-  id          String       @default(cuid()) @id
-  activity    Activity     @relation(name: "ScheduleActivity")
-  attendances Attendance[] @relation(name: "AttendanceSchedule")
-  date        DateTime
+  id         String       @default(cuid()) @id
+  activity   Activity     @relation(name: "ScheduleActivity")
+  attendance Attendance[] @relation(name: "AttendanceSchedule")
+  date       DateTime
 }
 
 model Attendance {

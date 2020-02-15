@@ -6,6 +6,7 @@ export const Query = queryType({
   definition(t) {
     t.crud.profiles()
     t.crud.groups()
+    t.crud.profile()
     t.crud.activities()
     t.crud.attendances()
     t.crud.schedules()

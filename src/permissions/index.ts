@@ -39,5 +39,6 @@ export const permissions = shield({
     publish: rules.isPostOwner,
     login: not(rules.isAuthenticatedUser),
     signup: not(rules.isAuthenticatedUser),
+    makeAttendance: rules.isAuthenticatedUser,
   },
 })
