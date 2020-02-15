@@ -25,13 +25,14 @@ const rules = {
 
 export const permissions = shield({
   Query: {
+    activities: not(rules.isAuthenticatedUser),
     me: rules.isAuthenticatedUser,
     filterPosts: rules.isAuthenticatedUser,
     post: rules.isAuthenticatedUser,
-    groups: not(rules.isAuthenticatedUser),
-    profiles: not(rules.isAuthenticatedUser),
-    activities: not(rules.isAuthenticatedUser),
+    groups: rules.isAuthenticatedUser,
+    profiles: rules.isAuthenticatedUser,
     scheduleUntilNow: rules.isAuthenticatedUser,
+    attendances: rules.isAuthenticatedUser,
   },
   Mutation: {
     createDraft: rules.isAuthenticatedUser,
