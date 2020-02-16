@@ -4,6 +4,7 @@ export const Attendance = objectType({
   name: 'Attendance',
   definition(t) {
     t.model.id()
+    t.model.slug()
     t.model.schedule()
     t.model.status()
     t.model.attendees()

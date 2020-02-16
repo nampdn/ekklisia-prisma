@@ -12,5 +12,7 @@ export const Profile = objectType({
     t.model.gender()
     t.model.email()
     t.model.phoneNumber()
+    t.model.absentee()
+    t.model.attendee()
   },
 })

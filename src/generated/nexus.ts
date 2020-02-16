@@ -630,6 +630,7 @@ export interface NexusGenFieldTypes {
     group: NexusGenRootTypes['Group']; // Group!
     id: string; // String!
     schedule: NexusGenRootTypes['Schedule']; // Schedule!
+    slug: string; // String!
     status: string; // String!
     updatedAt: any; // DateTime!
   }
@@ -667,6 +668,8 @@ export interface NexusGenFieldTypes {
     title: string; // String!
   }
   Profile: { // field return type
+    absentee: NexusGenRootTypes['Attendance'][]; // [Attendance!]!
+    attendee: NexusGenRootTypes['Attendance'][]; // [Attendance!]!
     birthday: any | null; // DateTime
     email: string | null; // String
     facebookId: string | null; // String
@@ -762,6 +765,7 @@ export interface NexusGenArgTypes {
     makeAttendance: { // args
       absentees?: string[] | null; // [ID!]
       attendees?: string[] | null; // [ID!]
+      groupId?: string | null; // ID
       scheduleId: string; // ID!
     }
     publish: { // args
@@ -782,6 +786,22 @@ export interface NexusGenArgTypes {
       skip?: number | null; // Int
     }
     groups: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+  }
+  Profile: {
+    absentee: { // args
+      after?: string | null; // String
+      before?: string | null; // String
+      first?: number | null; // Int
+      last?: number | null; // Int
+      skip?: number | null; // Int
+    }
+    attendee: { // args
       after?: string | null; // String
       before?: string | null; // String
       first?: number | null; // Int

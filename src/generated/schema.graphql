@@ -47,6 +47,7 @@ type Attendance {
   group: Group!
   id: String!
   schedule: Schedule!
+  slug: String!
   status: String!
   updatedAt: DateTime!
 }
@@ -297,7 +298,7 @@ type Mutation {
   createProfile(data: ProfileCreateInput!): Profile!
   deletePost(id: ID): Post
   login(email: String!, password: String!): AuthPayload!
-  makeAttendance(absentees: [ID!], attendees: [ID!], scheduleId: ID!): Attendance!
+  makeAttendance(absentees: [ID!], attendees: [ID!], groupId: ID, scheduleId: ID!): Attendance!
   publish(id: ID): Post
   signup(email: String!, name: String, password: String!): AuthPayload!
 }
@@ -376,6 +377,8 @@ input PostWhereUniqueInput {
 }
 
 type Profile {
+  absentee(after: String, before: String, first: Int, last: Int, skip: Int): [Attendance!]!
+  attendee(after: String, before: String, first: Int, last: Int, skip: Int): [Attendance!]!
   birthday: DateTime
   email: String
   facebookId: String

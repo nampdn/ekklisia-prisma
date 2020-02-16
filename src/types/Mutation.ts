@@ -108,22 +108,27 @@ export const Mutation = mutationType({
       type: 'Attendance',
       args: {
         scheduleId: idArg({ required: true }),
+        groupId: idArg({ required: false }),
         attendees: idArg({ list: true }),
         absentees: idArg({ list: true }),
       },
       resolve: async (
         _,
-        { scheduleId, attendees = [], absentees = [] },
+        { scheduleId, groupId, attendees = [], absentees = [] },
         ctx,
       ) => {
         // TODO specify groupId by the client to match the group quicklier
-        const groups = await getGroupsByUser(ctx)
-        if (groups.length < 1) {
-          throw new Error(
-            'Có lỗi liên quan đến nhóm, vui lòng thử thoát ra và đăng nhập lại!',
-          )
+        let gId = groupId
+        if (!gId) {
+          const groups = await getGroupsByUser(ctx)
+          if (groups.length < 1) {
+            throw new Error(
+              'Có lỗi liên quan đến nhóm, vui lòng thử thoát ra và đăng nhập lại!',
+            )
+          } else {
+            gId = groups[0].id
+          }
         }
-        console.log('group', groups)
 
         const schedule = await ctx.prisma.schedule.findOne({
           where: { id: scheduleId },
@@ -132,14 +137,12 @@ export const Mutation = mutationType({
           throw new Error(
             'Không tìm thấy lịch cho phần điểm danh này, vui lòng kiểm tra lại!',
           )
-        console.log('schedule', schedule)
 
         try {
-          const currentGroup = groups[0]
-          const slug = `${schedule.id}$${currentGroup.id}`
+          const slug = `${schedule.id}$${gId}`
           const data: any = {
             slug,
-            group: { connect: { id: currentGroup.id } },
+            group: { connect: { id: gId } },
             schedule: { connect: { id: schedule.id } },
             status: 'done',
           }
@@ -152,40 +155,49 @@ export const Mutation = mutationType({
               connect: absentees.map((id: string) => ({ id })),
             }
 
-          // // Check for last value
-          // const existAttendance = await ctx.prisma.attendance.findOne({
-          //   where: { slug },
-          //   select: { attendees: true, absentees: true },
-          // })
-          // console.log(JSON.stringify(existAttendance, null, 2))
-          // if (existAttendance) {
-          //   const existAttendees = existAttendance.attendees.map(
-          //     ({ id }: any) => ({ id }),
-          //   )
-          //   const existAbsentees = existAttendance.absentees.map(
-          //     ({ id }: any) => ({ id }),
-          //   )
-          //   // await ctx.prisma.attendance.update({
-          //   console.log({
-          //     where: { slug },
-          //     data: {
-          //       attendees: {
-          //         disconnect: differenceWith(
-          //           existAttendees,
-          //           data.attendees,
-          //           isEqual,
-          //         ),
-          //       },
-          //       absentees: {
-          //         disconnect: differenceWith(
-          //           existAbsentees,
-          //           data.absentees,
-          //           isEqual,
-          //         ),
-          //       },
-          //     },
-          //   })
-          // }
+          // Check for last value and disconnect the updated one
+          const existAttendance = await ctx.prisma.attendance.findOne({
+            where: { slug },
+            select: { attendees: true, absentees: true },
+          })
+          if (existAttendance) {
+            const existAttendees = existAttendance.attendees.map(
+              ({ id }: any) => ({ id }),
+            )
+            const existAbsentees = existAttendance.absentees.map(
+              ({ id }: any) => ({ id }),
+            )
+            const disconnectOldAttendance = {
+              where: { slug },
+              data: {
+                attendees: {
+                  disconnect: differenceWith(
+                    existAttendees,
+                    data.attendees ? data.attendees.connect : [],
+                    isEqual,
+                  ),
+                },
+                absentees: {
+                  disconnect: differenceWith(
+                    existAbsentees,
+                    data.absentees ? data.absentees.connect : [],
+                    isEqual,
+                  ),
+                },
+              },
+            }
+            if (
+              disconnectOldAttendance.data.attendees.disconnect.length === 0
+            ) {
+              delete disconnectOldAttendance.data.attendees
+            }
+            if (
+              disconnectOldAttendance.data.absentees.disconnect.length === 0
+            ) {
+              delete disconnectOldAttendance.data.absentees
+            }
+            await ctx.prisma.attendance.update(disconnectOldAttendance)
+          }
 
           return await ctx.prisma.attendance.upsert({
             where: { slug },
