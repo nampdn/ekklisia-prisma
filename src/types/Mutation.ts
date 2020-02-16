@@ -1,6 +1,8 @@
 import { compare, hash } from 'bcryptjs'
 import { sign } from 'jsonwebtoken'
 import { idArg, mutationType, stringArg } from 'nexus'
+import { differenceWith, isEqual } from 'lodash'
+
 import { APP_SECRET, getUserId, getGroupsByUser } from '../utils'
 
 export const Mutation = mutationType({
@@ -121,6 +123,7 @@ export const Mutation = mutationType({
             'Có lỗi liên quan đến nhóm, vui lòng thử thoát ra và đăng nhập lại!',
           )
         }
+        console.log('group', groups)
 
         const schedule = await ctx.prisma.schedule.findOne({
           where: { id: scheduleId },
@@ -129,6 +132,7 @@ export const Mutation = mutationType({
           throw new Error(
             'Không tìm thấy lịch cho phần điểm danh này, vui lòng kiểm tra lại!',
           )
+        console.log('schedule', schedule)
 
         try {
           const currentGroup = groups[0]
@@ -148,7 +152,41 @@ export const Mutation = mutationType({
               connect: absentees.map((id: string) => ({ id })),
             }
 
-          console.log(JSON.stringify(data, null, 2))
+          // // Check for last value
+          // const existAttendance = await ctx.prisma.attendance.findOne({
+          //   where: { slug },
+          //   select: { attendees: true, absentees: true },
+          // })
+          // console.log(JSON.stringify(existAttendance, null, 2))
+          // if (existAttendance) {
+          //   const existAttendees = existAttendance.attendees.map(
+          //     ({ id }: any) => ({ id }),
+          //   )
+          //   const existAbsentees = existAttendance.absentees.map(
+          //     ({ id }: any) => ({ id }),
+          //   )
+          //   // await ctx.prisma.attendance.update({
+          //   console.log({
+          //     where: { slug },
+          //     data: {
+          //       attendees: {
+          //         disconnect: differenceWith(
+          //           existAttendees,
+          //           data.attendees,
+          //           isEqual,
+          //         ),
+          //       },
+          //       absentees: {
+          //         disconnect: differenceWith(
+          //           existAbsentees,
+          //           data.absentees,
+          //           isEqual,
+          //         ),
+          //       },
+          //     },
+          //   })
+          // }
+
           return await ctx.prisma.attendance.upsert({
             where: { slug },
             create: data,

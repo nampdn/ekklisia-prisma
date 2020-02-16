@@ -66,9 +66,9 @@ input AttendanceCreateManyWithoutGroupInput {
   create: [AttendanceCreateWithoutGroupInput!]
 }
 
-input AttendanceCreateOneWithoutScheduleInput {
-  connect: AttendanceWhereUniqueInput
-  create: AttendanceCreateWithoutScheduleInput
+input AttendanceCreateManyWithoutScheduleInput {
+  connect: [AttendanceWhereUniqueInput!]
+  create: [AttendanceCreateWithoutScheduleInput!]
 }
 
 input AttendanceCreateWithoutAbsenteesInput {
@@ -76,7 +76,7 @@ input AttendanceCreateWithoutAbsenteesInput {
   createdAt: DateTime
   group: GroupCreateOneWithoutAttendancesInput!
   id: String
-  schedule: ScheduleCreateOneWithoutAttendanceInput!
+  schedule: ScheduleCreateOneWithoutAttendancesInput!
   slug: String!
   status: String!
   updatedAt: DateTime
@@ -87,7 +87,7 @@ input AttendanceCreateWithoutAttendeesInput {
   createdAt: DateTime
   group: GroupCreateOneWithoutAttendancesInput!
   id: String
-  schedule: ScheduleCreateOneWithoutAttendanceInput!
+  schedule: ScheduleCreateOneWithoutAttendancesInput!
   slug: String!
   status: String!
   updatedAt: DateTime
@@ -98,7 +98,7 @@ input AttendanceCreateWithoutGroupInput {
   attendees: ProfileCreateManyWithoutAttendeeInput
   createdAt: DateTime
   id: String
-  schedule: ScheduleCreateOneWithoutAttendanceInput!
+  schedule: ScheduleCreateOneWithoutAttendancesInput!
   slug: String!
   status: String!
   updatedAt: DateTime
@@ -609,6 +609,7 @@ type Query {
 
 type Schedule {
   activity: Activity!
+  attendances(after: String, before: String, first: Int, last: Int, skip: Int): [Attendance!]!
   date: DateTime!
   id: String!
 }
@@ -618,18 +619,18 @@ input ScheduleCreateManyWithoutActivityInput {
   create: [ScheduleCreateWithoutActivityInput!]
 }
 
-input ScheduleCreateOneWithoutAttendanceInput {
+input ScheduleCreateOneWithoutAttendancesInput {
   connect: ScheduleWhereUniqueInput
-  create: ScheduleCreateWithoutAttendanceInput
+  create: ScheduleCreateWithoutAttendancesInput
 }
 
 input ScheduleCreateWithoutActivityInput {
-  attendance: AttendanceCreateOneWithoutScheduleInput!
+  attendances: AttendanceCreateManyWithoutScheduleInput
   date: DateTime!
   id: String
 }
 
-input ScheduleCreateWithoutAttendanceInput {
+input ScheduleCreateWithoutAttendancesInput {
   activity: ActivityCreateOneWithoutSchedulesInput!
   date: DateTime!
   id: String
