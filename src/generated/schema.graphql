@@ -597,6 +597,7 @@ input ProfileWhereUniqueInput {
 
 type Query {
   activities(after: String, before: String, first: Int, last: Int, skip: Int): [Activity!]!
+  attendance(where: AttendanceWhereUniqueInput!): Attendance
   attendances(after: String, before: String, first: Int, last: Int, skip: Int): [Attendance!]!
   feed: [Post!]!
   filterPosts(searchString: String): [Post!]!

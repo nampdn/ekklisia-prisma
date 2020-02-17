@@ -682,6 +682,7 @@ export interface NexusGenFieldTypes {
   }
   Query: { // field return type
     activities: NexusGenRootTypes['Activity'][]; // [Activity!]!
+    attendance: NexusGenRootTypes['Attendance'] | null; // Attendance
     attendances: NexusGenRootTypes['Attendance'][]; // [Attendance!]!
     feed: NexusGenRootTypes['Post'][]; // [Post!]!
     filterPosts: NexusGenRootTypes['Post'][]; // [Post!]!
@@ -816,6 +817,9 @@ export interface NexusGenArgTypes {
       first?: number | null; // Int
       last?: number | null; // Int
       skip?: number | null; // Int
+    }
+    attendance: { // args
+      where: NexusGenInputs['AttendanceWhereUniqueInput']; // AttendanceWhereUniqueInput!
     }
     attendances: { // args
       after?: string | null; // String

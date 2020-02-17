@@ -8,8 +8,10 @@ export const Query = queryType({
     t.crud.groups()
     t.crud.profile()
     t.crud.activities()
-    t.crud.attendances()
     t.crud.schedules()
+
+    t.crud.attendance()
+    t.crud.attendances()
 
     t.list.field('scheduleUntilNow', {
       type: 'Schedule',

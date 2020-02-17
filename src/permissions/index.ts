@@ -33,6 +33,7 @@ export const permissions = shield({
     profiles: rules.isAuthenticatedUser,
     scheduleUntilNow: rules.isAuthenticatedUser,
     attendances: rules.isAuthenticatedUser,
+    attendance: rules.isAuthenticatedUser,
   },
   Mutation: {
     createDraft: rules.isAuthenticatedUser,
