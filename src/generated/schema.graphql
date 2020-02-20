@@ -604,6 +604,7 @@ type Query {
   groups(after: String, before: String, first: Int, last: Int, skip: Int): [Group!]!
   me: User
   membersInGroup: [Profile!]!
+  myGroups: [Group!]
   post(id: ID): Post
   profile(where: ProfileWhereUniqueInput!): Profile
   profiles(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!

@@ -29,9 +29,14 @@ export async function getGroupsByUser(
   ctx: Context,
   year = new Date().getFullYear(),
 ) {
-  const profile = await getAuthProfile(ctx)
-  const groups = await ctx.prisma.group.findMany({
-    where: { members: { some: { id: profile?.id } }, year },
-  })
-  return groups
+  try {
+    const profile = await getAuthProfile(ctx)
+    const groups = await ctx.prisma.group.findMany({
+      where: { members: { some: { id: profile?.id } }, year },
+    })
+    return groups
+  } catch (err) {
+    console.error(err)
+    throw err
+  }
 }

@@ -689,6 +689,7 @@ export interface NexusGenFieldTypes {
     groups: NexusGenRootTypes['Group'][]; // [Group!]!
     me: NexusGenRootTypes['User'] | null; // User
     membersInGroup: NexusGenRootTypes['Profile'][]; // [Profile!]!
+    myGroups: NexusGenRootTypes['Group'][] | null; // [Group!]
     post: NexusGenRootTypes['Post'] | null; // Post
     profile: NexusGenRootTypes['Profile'] | null; // Profile
     profiles: NexusGenRootTypes['Profile'][]; // [Profile!]!

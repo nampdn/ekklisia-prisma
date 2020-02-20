@@ -1,6 +1,6 @@
 import { idArg, queryType, stringArg } from 'nexus'
 import * as moment from 'moment'
-import { getUserId } from '../utils'
+import { getUserId, getGroupsByUser } from '../utils'
 
 export const Query = queryType({
   definition(t) {
@@ -12,6 +12,15 @@ export const Query = queryType({
 
     t.crud.attendance()
     t.crud.attendances()
+
+    t.list.field('myGroups', {
+      type: 'Group',
+      nullable: true,
+      resolve: async (_parent, args, ctx) => {
+        const groups = await getGroupsByUser(ctx)
+        return groups
+      },
+    })
 
     t.list.field('scheduleUntilNow', {
       type: 'Schedule',
