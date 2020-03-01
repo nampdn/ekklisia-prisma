@@ -129,10 +129,14 @@ type AuthPayload {
 scalar DateTime
 
 type Group {
+  endAt: DateTime
   id: String!
   leader: Profile
   members(after: String, before: String, first: Int, last: Int, skip: Int): [Profile!]!
   name: String!
+  stage: String!
+  startAt: DateTime
+  year: Int
 }
 
 input GroupCreateInput {

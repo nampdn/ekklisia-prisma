@@ -639,10 +639,14 @@ export interface NexusGenFieldTypes {
     user: NexusGenRootTypes['User']; // User!
   }
   Group: { // field return type
+    endAt: any | null; // DateTime
     id: string; // String!
     leader: NexusGenRootTypes['Profile'] | null; // Profile
     members: NexusGenRootTypes['Profile'][]; // [Profile!]!
     name: string; // String!
+    stage: string; // String!
+    startAt: any | null; // DateTime
+    year: number | null; // Int
   }
   Mutation: { // field return type
     createDraft: NexusGenRootTypes['Post']; // Post!
